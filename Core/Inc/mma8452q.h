@@ -51,4 +51,13 @@ HAL_StatusTypeDef mma8452qRead(I2C_HandleTypeDef* hi2c, uint8_t reg, uint8_t num
  * */
 HAL_StatusTypeDef mma8452qInit(I2C_HandleTypeDef* hi2c);
 
+
+
+/*
+ *
+ * acc_info : the array that contains status, MSB of X acc, LSB of X acc, MSB of Y acc, LSB of Y acc, MSB of Z acc, LSB of Z acc
+ * acc_xyz : new array that contains acc x, acc y, acc z
+ * */
+void getAccXYZ(const uint8_t* acc_info, int16_t* acc_xyz);
+
 #endif /* INC_MMA8452Q_H_ */

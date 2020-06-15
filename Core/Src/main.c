@@ -69,8 +69,9 @@ static void MX_I2C1_Init(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-	uint8_t data_rec[7] = { 0 };
-	uint8_t wait;
+	uint8_t acc_info[7] = { 0 };
+	int16_t acc_xyz[3] = { 0 };
+	int16_t x, y, z;
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -98,36 +99,22 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+	mma8452qInit(&hi2c1);
 
-  mma8452qInit(&hi2c1);
 
-  //wait = 0;
-  while (1)
-  {
-	  HAL_StatusTypeDef ret = mma8452qRead(&hi2c1, 0x00, 7, data_rec);
-	  if (ret == HAL_OK) {
-		  int16_t xAccl = ((data_rec[1] * 256) + data_rec[2]) / 16;
-		  if (xAccl > 2047)
-		  {
-			xAccl -= 4096;
-		  }
-		  int16_t yAccl = ((data_rec[3] * 256) + data_rec[4]) / 16;
-		    if (yAccl > 2047)
-		    {
-		      yAccl -= 4096;
-		    }
+	while (1)
+	{
+		HAL_StatusTypeDef ret = mma8452qRead(&hi2c1, 0x00, 7, acc_info);
+		if (ret == HAL_OK) {
+			getAccXYZ(acc_info, acc_xyz);
+			x = acc_xyz[0];
+			y = acc_xyz[1];
+			z = acc_xyz[2];
+			HAL_Delay(250);
+		}
+		else {
 
-		    int16_t zAccl = ((data_rec[5] * 256) + data_rec[6]) / 16;
-		    if (zAccl > 2047)
-		    {
-		      zAccl -= 4096;
-		    }
-		HAL_Delay(250);
-		wait = 0;
-	  }
-	  else {
-
-	  }
+		}
 
     /* USER CODE END WHILE */
 
