@@ -23,7 +23,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "mma8452q.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -44,8 +44,7 @@
 I2C_HandleTypeDef hi2c1;
 
 /* USER CODE BEGIN PV */
-static const uint8_t MMA8452Q_ADDR = 0x1C << 1;
-static const uint8_t REG_TEMP = 0x2A;
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -60,17 +59,6 @@ static void MX_I2C1_Init(void);
 /* USER CODE BEGIN 0 */
 
 
-HAL_StatusTypeDef adxl_write(uint8_t reg, uint8_t value) {
-	uint8_t data[2];
-	data[0] = reg;
-	data[1] = value;
-	return HAL_I2C_Master_Transmit(&hi2c1, MMA8452Q_ADDR, data, 2, 10);
-}
-
-HAL_StatusTypeDef adxl_read(uint8_t reg, uint8_t numberofbytes, uint8_t* data_rec) {
-	return HAL_I2C_Mem_Read(&hi2c1, MMA8452Q_ADDR, reg, 1, data_rec, numberofbytes, 100);
-}
-
 
 /* USER CODE END 0 */
 
@@ -81,15 +69,8 @@ HAL_StatusTypeDef adxl_read(uint8_t reg, uint8_t numberofbytes, uint8_t* data_re
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-	HAL_StatusTypeDef ret;
-	uint8_t debug = 0;
-	uint8_t debug2 = 0;
-	uint8_t debug3 = 0;
-	//uint8_t buf[12] = { 0 };
-	uint8_t data_rec[7] = { -1, -1, -1, -1, -1, -1, -1 };
-	int16_t val;
+	uint8_t data_rec[7] = { 0 };
 	uint8_t wait;
-	uint8_t v1 = -1, v2 = -1, v3 = -1;
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -118,54 +99,36 @@ int main(void)
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
 
-  HAL_StatusTypeDef ret1 = adxl_write(0x2A, 0x00);
-  if (ret1 != HAL_OK) {
-	  debug = -1;
-  }
-  else {
-	  debug = 1;
-  }
-  adxl_read(0x2A, 1, &v1);
-  HAL_StatusTypeDef ret2 = adxl_write(0x2A, 0x01);
-  if (ret2 != HAL_OK) {
-	  debug2 = -1;
-  }
-  else {
-	  debug2 = 1;
-  }
-  adxl_read(0x2A, 1, &v2);
-
-  HAL_StatusTypeDef ret3 = adxl_write(0x0E, 0x00);
-  if (ret3 != HAL_OK) {
-	  debug3 = -1;
-  }
-  else {
-	  debug3 = 1;
-  }
-  adxl_read(0x0E, 1, &v3);
+  mma8452qInit(&hi2c1);
 
   //wait = 0;
   while (1)
   {
-	HAL_StatusTypeDef ret = adxl_read(0x00, 7, data_rec);
-	  int16_t xAccl = ((data_rec[1] * 256) + data_rec[2]) / 16;
-	  if (xAccl > 2047)
-	  {
-		xAccl -= 4096;
-	  }
-	  int16_t yAccl = ((data_rec[3] * 256) + data_rec[4]) / 16;
-	    if (yAccl > 2047)
-	    {
-	      yAccl -= 4096;
-	    }
+	  HAL_StatusTypeDef ret = mma8452qRead(&hi2c1, 0x00, 7, data_rec);
+	  if (ret == HAL_OK) {
+		  int16_t xAccl = ((data_rec[1] * 256) + data_rec[2]) / 16;
+		  if (xAccl > 2047)
+		  {
+			xAccl -= 4096;
+		  }
+		  int16_t yAccl = ((data_rec[3] * 256) + data_rec[4]) / 16;
+		    if (yAccl > 2047)
+		    {
+		      yAccl -= 4096;
+		    }
 
-	    int16_t zAccl = ((data_rec[5] * 256) + data_rec[6]) / 16;
-	    if (zAccl > 2047)
-	    {
-	      zAccl -= 4096;
-	    }
-	HAL_Delay(250);
-	wait = 0;
+		    int16_t zAccl = ((data_rec[5] * 256) + data_rec[6]) / 16;
+		    if (zAccl > 2047)
+		    {
+		      zAccl -= 4096;
+		    }
+		HAL_Delay(250);
+		wait = 0;
+	  }
+	  else {
+
+	  }
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
