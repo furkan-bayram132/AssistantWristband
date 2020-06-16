@@ -52,29 +52,14 @@ HAL_StatusTypeDef mma8452qInit(I2C_HandleTypeDef* hi2c) {
 
 
 /*
- * This function takes 7 bytes coming from censor and converts them into meaningfull acceloremeter values
+ * This function takes 7 bytes coming from censor and converts them into meaningful acceloremeter values
  * acc_info : the array(7 bytes) that contains status, MSB of X acc, LSB of X acc, MSB of Y acc, LSB of Y acc, MSB of Z acc, LSB of Z acc
  * acc_xyz : new array(6 bytes) that contains acc x, acc y, acc z
  * */
 void getAccXYZ(const uint8_t* acc_info, int16_t* acc_xyz) {
-	int16_t xAccl = ((acc_info[1] * 256) + acc_info[2]) / 16;
-	if (xAccl > 2047)
-	{
-	xAccl -= 4096;
-	}
-
-	int16_t yAccl = ((acc_info[3] * 256) + acc_info[4]) / 16;
-	if (yAccl > 2047)
-	{
-	  yAccl -= 4096;
-	}
-
-	int16_t zAccl = ((acc_info[5] * 256) + acc_info[6]) / 16;
-	if (zAccl > 2047)
-	{
-	  zAccl -= 4096;
-	}
-
+	int16_t xAccl = (((int16_t)(acc_info[1] << 8)) | acc_info[2]) >> 4;
+	int16_t yAccl = (((int16_t)(acc_info[3] << 8)) | acc_info[4]) >> 4;
+	int16_t zAccl = (((int16_t)(acc_info[5] << 8)) | acc_info[6]) >> 4;
 	acc_xyz[0] = xAccl;
 	acc_xyz[1] = yAccl;
 	acc_xyz[2] = zAccl;
