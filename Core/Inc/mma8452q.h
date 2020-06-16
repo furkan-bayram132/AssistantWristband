@@ -23,6 +23,16 @@
 #define MMA8452Q_REG_ADDR_2 (0x0E)
 
 
+/*
+ * This struct contains raw data coming from censor and variables to be set for meaningful x,y,z acceloremeter data
+ * */
+typedef struct AccData {
+   uint8_t acc_info[7];
+   int16_t x_acc;
+   int16_t y_acc;
+   int16_t z_acc;
+} AccData;
+
 
 /*
  * This function writes value to address reg using the assigned peripheral address
@@ -54,10 +64,9 @@ HAL_StatusTypeDef mma8452qInit(I2C_HandleTypeDef* hi2c);
 
 
 /*
- *
- * acc_info : the array that contains status, MSB of X acc, LSB of X acc, MSB of Y acc, LSB of Y acc, MSB of Z acc, LSB of Z acc
- * acc_xyz : new array that contains acc x, acc y, acc z
+ * This function takes 7 bytes coming from censor and converts them into meaningful acceloremeter values
+ * acc_3d : struct instance that contains raw data coming from censor and variables to be set for meaningful x,y,z acceloremeter data
  * */
-void getAccXYZ(const uint8_t* acc_info, int16_t* acc_xyz);
+void getAccXYZ(AccData* acc_3d);
 
 #endif /* INC_MMA8452Q_H_ */

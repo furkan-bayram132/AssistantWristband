@@ -73,9 +73,7 @@ static void MX_USART2_UART_Init(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-	uint8_t acc_info[7] = { 0 };
-	int16_t acc_xyz[3] = { 0 };
-	int16_t x, y, z;
+	AccData acc_3d;
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -109,19 +107,16 @@ int main(void)
 
 	while (1)
 	{
-		HAL_StatusTypeDef is_mma8452q_read_ok = mma8452qRead(&hi2c1, 0x00, 7, acc_info);
+		HAL_StatusTypeDef is_mma8452q_read_ok = mma8452qRead(&hi2c1, 0x00, 7, acc_3d.acc_info);
 		if (is_mma8452q_read_ok == HAL_OK) {
-			getAccXYZ(acc_info, acc_xyz);
-			x = acc_xyz[0];
-			y = acc_xyz[1];
-			z = acc_xyz[2];
+			getAccXYZ(&acc_3d);
 			char message[50] = { 0 };
-			sprintf(message, "acc_x: %d, acc_y: %d, acc_z: %d\r\n", x, y, z);
+			sprintf(message, "acc_x: %d, acc_y: %d, acc_z: %d\r\n", acc_3d.x_acc, acc_3d.y_acc, acc_3d.z_acc);
 			HAL_UART_Transmit(&huart2, (uint8_t *)message, sizeof(message), 100);
 			HAL_Delay(250);
 		}
 		else {
-
+			// uart ile buraya mesaj bas
 		}
 
     /* USER CODE END WHILE */
