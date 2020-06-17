@@ -41,7 +41,7 @@ all: AssistantWristband.elf secondary-outputs
 
 # Tool invocations
 AssistantWristband.elf: $(OBJS) $(USER_OBJS) C:\Users\DELL\Desktop\AssistantWristband\STM32F411RETX_FLASH.ld
-	arm-none-eabi-gcc -o "AssistantWristband.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\DELL\Desktop\AssistantWristband\STM32F411RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="AssistantWristband.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+	arm-none-eabi-gcc -o "AssistantWristband.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\DELL\Desktop\AssistantWristband\STM32F411RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="AssistantWristband.map" -Wl,--gc-sections -static -u _printf_float --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
