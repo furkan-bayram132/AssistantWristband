@@ -24,6 +24,10 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "mma8452q.h"
+#include "st7735.h"
+#include "fonts.h"
+#include "testimg.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -43,6 +47,8 @@
 /* Private variables ---------------------------------------------------------*/
 I2C_HandleTypeDef hi2c1;
 
+SPI_HandleTypeDef hspi3;
+
 UART_HandleTypeDef huart6;
 
 /* USER CODE BEGIN PV */
@@ -54,6 +60,7 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_I2C1_Init(void);
 static void MX_USART6_UART_Init(void);
+static void MX_SPI3_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -78,7 +85,7 @@ int main(void)
   /* MCU Configuration--------------------------------------------------------*/
 
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
-	HAL_Init();
+  HAL_Init();
 
   /* USER CODE BEGIN Init */
 
@@ -95,14 +102,47 @@ int main(void)
   MX_GPIO_Init();
   MX_I2C1_Init();
   MX_USART6_UART_Init();
+  MX_SPI3_Init();
   /* USER CODE BEGIN 2 */
 
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  	ST7735_Init();
 	mma8452qInit(&hi2c1);
 
+
+	  ST7735_FillScreen(ST7735_BLACK);
+	  ST7735_WriteString(5, 5, "STM32F401 Saat", Font_7x10, ST7735_WHITE, ST7735_BLACK);
+	  HAL_Delay(1000);
+	  ST7735_WriteString(5, 15, "uygulamasi", Font_7x10, ST7735_WHITE, ST7735_BLACK);
+	  HAL_Delay(250);
+	  ST7735_WriteString(5, 25, "aciliyor..", Font_7x10, ST7735_WHITE, ST7735_BLACK);
+	  HAL_Delay(1000);
+	  //sprintf(strtxt,"Prg Ver:%s",Prgver);
+	  //ST7735_WriteString(5, 35, strtxt, Font_7x10, ST7735_WHITE, ST7735_BLACK);
+	  HAL_Delay(3000);
+
+	  ST7735_FillScreen(ST7735_WHITE);
+	  ST7735_DrawImage(0,0,128,128,win10_logo);
+
+	  /*
+	  uint8_t scr = 0;
+	  uint8_t yzd = 0;
+	  for (scr=0;scr<128;scr++)
+	  {
+		  yzd = ((scr * 100)/128);
+		  ST7735_line_v(128,148,scr,1,ST7735_RED);
+		  sprintf(strtxt,"Loading:%03d",yzd+1);
+		  ST7735_WriteString(30, 150, strtxt, Font_7x10, ST7735_BLUE, ST7735_WHITE);
+		  HAL_Delay(10);
+	  }
+		*/
+
+	  HAL_Delay(2000);
+	  ST7735_FillScreen(ST7735_WHITE);
+	  ST7735_WriteString(0, 150, "www.digitalruh.com", Font_7x10, ST7735_BLACK, ST7735_WHITE);
 
 	while (1)
 	{
@@ -116,7 +156,14 @@ int main(void)
 			double z_acc = acc_3d.z_acc / 1024.;
 			double magnitude = sqrt((x_acc * x_acc) + (y_acc * y_acc) + (z_acc * z_acc));
 			sprintf(message, "%.2f %.2f %.2f %.2f\r\n", x_acc, y_acc, z_acc, magnitude);
-			HAL_UART_Transmit(&huart6, (uint8_t *)message, sizeof(message), 100);
+			ST7735_WriteString(0, 150, message, Font_7x10, ST7735_BLACK, ST7735_WHITE);
+			HAL_StatusTypeDef blue_ok = HAL_UART_Transmit(&huart6, (uint8_t *)message, sizeof(message), 100);
+				if (blue_ok == HAL_OK) {
+					ST7735_WriteString(0, 100, "ok...", Font_7x10, ST7735_BLACK, ST7735_WHITE);
+				}
+				else {
+					ST7735_WriteString(0, 100, "not ok...", Font_7x10, ST7735_BLACK, ST7735_WHITE);
+				}
 			HAL_Delay(100);
 		}
 		else {
@@ -207,6 +254,44 @@ static void MX_I2C1_Init(void)
 }
 
 /**
+  * @brief SPI3 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_SPI3_Init(void)
+{
+
+  /* USER CODE BEGIN SPI3_Init 0 */
+
+  /* USER CODE END SPI3_Init 0 */
+
+  /* USER CODE BEGIN SPI3_Init 1 */
+
+  /* USER CODE END SPI3_Init 1 */
+  /* SPI3 parameter configuration*/
+  hspi3.Instance = SPI3;
+  hspi3.Init.Mode = SPI_MODE_MASTER;
+  hspi3.Init.Direction = SPI_DIRECTION_1LINE;
+  hspi3.Init.DataSize = SPI_DATASIZE_8BIT;
+  hspi3.Init.CLKPolarity = SPI_POLARITY_LOW;
+  hspi3.Init.CLKPhase = SPI_PHASE_1EDGE;
+  hspi3.Init.NSS = SPI_NSS_SOFT;
+  hspi3.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_2;
+  hspi3.Init.FirstBit = SPI_FIRSTBIT_MSB;
+  hspi3.Init.TIMode = SPI_TIMODE_DISABLE;
+  hspi3.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
+  hspi3.Init.CRCPolynomial = 10;
+  if (HAL_SPI_Init(&hspi3) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN SPI3_Init 2 */
+
+  /* USER CODE END SPI3_Init 2 */
+
+}
+
+/**
   * @brief USART6 Initialization Function
   * @param None
   * @retval None
@@ -246,11 +331,44 @@ static void MX_USART6_UART_Init(void)
   */
 static void MX_GPIO_Init(void)
 {
+  GPIO_InitTypeDef GPIO_InitStruct = {0};
 
   /* GPIO Ports Clock Enable */
   __HAL_RCC_GPIOH_CLK_ENABLE();
   __HAL_RCC_GPIOA_CLK_ENABLE();
+  __HAL_RCC_GPIOC_CLK_ENABLE();
+  __HAL_RCC_GPIOD_CLK_ENABLE();
   __HAL_RCC_GPIOB_CLK_ENABLE();
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(DISP_RST_GPIO_Port, DISP_RST_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(DISP_A0_DC_GPIO_Port, DISP_A0_DC_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(DISP_CS_GPIO_Port, DISP_CS_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin : DISP_RST_Pin */
+  GPIO_InitStruct.Pin = DISP_RST_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(DISP_RST_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : DISP_A0_DC_Pin */
+  GPIO_InitStruct.Pin = DISP_A0_DC_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(DISP_A0_DC_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : DISP_CS_Pin */
+  GPIO_InitStruct.Pin = DISP_CS_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(DISP_CS_GPIO_Port, &GPIO_InitStruct);
 
 }
 
