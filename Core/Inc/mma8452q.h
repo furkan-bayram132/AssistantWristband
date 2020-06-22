@@ -20,7 +20,7 @@
 // first register address to be set its value
 #define MMA8452Q_REG_ADDR_1 (0x2A)
 // second register address to be set its value
-#define MMA8452Q_REG_ADDR_2 (0x0E)
+#define MMA8452Q_REG_ADDR_2 (0x0E) // XYZ_DATA_CFG p23
 
 
 /*

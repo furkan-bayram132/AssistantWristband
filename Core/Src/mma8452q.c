@@ -40,7 +40,7 @@ HAL_StatusTypeDef mma8452qRead(I2C_HandleTypeDef* hi2c, uint8_t reg, uint8_t num
  * hi2c  : address of i2c peripheral device that will make communication between STM32 and MMA8452Q censor
  * */
 HAL_StatusTypeDef mma8452qInit(I2C_HandleTypeDef* hi2c) {
-	  HAL_StatusTypeDef ret1 = mma8452qWrite(hi2c, MMA8452Q_REG_ADDR_1, 0x00);
+	  HAL_StatusTypeDef ret1 = mma8452qWrite(hi2c, MMA8452Q_REG_ADDR_1, 0x00); // 2g selected after 0x00 sent
 	  HAL_StatusTypeDef ret2 = mma8452qWrite(hi2c, MMA8452Q_REG_ADDR_1, 0x01);
 	  HAL_StatusTypeDef ret3 = mma8452qWrite(hi2c, MMA8452Q_REG_ADDR_2, 0x00);
 	  if (ret1 == HAL_OK && ret2 == HAL_OK && ret3 == HAL_OK)
