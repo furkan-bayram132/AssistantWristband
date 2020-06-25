@@ -69,7 +69,6 @@ static void MX_SPI3_Init(void);
 /* USER CODE BEGIN 0 */
 
 
-
 /* USER CODE END 0 */
 
 /**
@@ -142,7 +141,7 @@ int main(void)
 
 	  HAL_Delay(2000);
 	  ST7735_FillScreen(ST7735_WHITE);
-	  ST7735_WriteString(0, 150, "www.digitalruh.com", Font_7x10, ST7735_BLACK, ST7735_WHITE);
+	  //ST7735_WriteString(0, 150, "www.digitalruh.com", Font_7x10, ST7735_BLACK, ST7735_WHITE);
 
 	while (1)
 	{
@@ -155,8 +154,8 @@ int main(void)
 			double y_acc = acc_3d.y_acc / 1024.;
 			double z_acc = acc_3d.z_acc / 1024.;
 			double magnitude = sqrt((x_acc * x_acc) + (y_acc * y_acc) + (z_acc * z_acc));
-			sprintf(message, "%.2f %.2f %.2f %.2f\r\n", x_acc, y_acc, z_acc, magnitude);
-			ST7735_WriteString(0, 150, message, Font_7x10, ST7735_BLACK, ST7735_WHITE);
+			sprintf(message, "%.2f %.2f %.2f \r\n", x_acc, y_acc, z_acc);
+			ST7735_WriteString(0, 50, message, Font_7x10, ST7735_BLACK, ST7735_WHITE);
 			HAL_StatusTypeDef blue_ok = HAL_UART_Transmit(&huart6, (uint8_t *)message, sizeof(message), 100);
 				if (blue_ok == HAL_OK) {
 					ST7735_WriteString(0, 100, "ok...", Font_7x10, ST7735_BLACK, ST7735_WHITE);
@@ -335,8 +334,8 @@ static void MX_GPIO_Init(void)
 
   /* GPIO Ports Clock Enable */
   __HAL_RCC_GPIOH_CLK_ENABLE();
-  __HAL_RCC_GPIOA_CLK_ENABLE();
   __HAL_RCC_GPIOC_CLK_ENABLE();
+  __HAL_RCC_GPIOA_CLK_ENABLE();
   __HAL_RCC_GPIOD_CLK_ENABLE();
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
@@ -348,6 +347,12 @@ static void MX_GPIO_Init(void)
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(DISP_CS_GPIO_Port, DISP_CS_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pins : sag_Pin orta_Pin sol_Pin */
+  GPIO_InitStruct.Pin = sag_Pin|orta_Pin|sol_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
+  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
   /*Configure GPIO pin : DISP_RST_Pin */
   GPIO_InitStruct.Pin = DISP_RST_Pin;
@@ -369,6 +374,16 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(DISP_CS_GPIO_Port, &GPIO_InitStruct);
+
+  /* EXTI interrupt init*/
+  HAL_NVIC_SetPriority(EXTI0_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(EXTI0_IRQn);
+
+  HAL_NVIC_SetPriority(EXTI1_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(EXTI1_IRQn);
+
+  HAL_NVIC_SetPriority(EXTI2_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(EXTI2_IRQn);
 
 }
 

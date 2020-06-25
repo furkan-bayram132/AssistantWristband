@@ -58,6 +58,15 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+#define sag_Pin GPIO_PIN_0
+#define sag_GPIO_Port GPIOC
+#define sag_EXTI_IRQn EXTI0_IRQn
+#define orta_Pin GPIO_PIN_1
+#define orta_GPIO_Port GPIOC
+#define orta_EXTI_IRQn EXTI1_IRQn
+#define sol_Pin GPIO_PIN_2
+#define sol_GPIO_Port GPIOC
+#define sol_EXTI_IRQn EXTI2_IRQn
 #define DISP_RST_Pin GPIO_PIN_15
 #define DISP_RST_GPIO_Port GPIOA
 #define DISP_A0_DC_Pin GPIO_PIN_11
