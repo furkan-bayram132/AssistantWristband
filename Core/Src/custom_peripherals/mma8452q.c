@@ -5,7 +5,7 @@
  *      Author: hizirov
  */
 
-#include "mma8452q.h"
+#include "custom_peripherals/mma8452q.h"
 
 /*
  * This function writes value to address reg using the assigned peripheral address

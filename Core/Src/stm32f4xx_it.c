@@ -23,8 +23,8 @@
 #include "stm32f4xx_it.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "st7735.h"
-#include "fonts.h"
+#include "custom_peripherals/st7735.h"
+#include "custom_peripherals/fonts.h"
 //#include "testimg.h"
 /* USER CODE END Includes */
 

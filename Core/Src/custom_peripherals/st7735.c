@@ -1,6 +1,6 @@
 /* vim: set ai et ts=4 sw=4: */
 #include "stm32f4xx_hal.h"
-#include "st7735.h"
+#include "custom_peripherals/st7735.h"
 
 #define DELAY 0x80
 
@@ -324,7 +324,7 @@ void ST7735_draw_line( unsigned char x1, unsigned char y1,
 			y2 = yTmp;
 		}
 
-		if((y2-y1) >= (x2-x1) || (y1-y2) >= (x2-x1)) {	// angle larger or equal 45°
+		if((y2-y1) >= (x2-x1) || (y1-y2) >= (x2-x1)) {	// angle larger or equal 45ï¿½
 			length = x2-x1;								// not really the length :)
 			m = ((y2-y1)*200)/length;
 			yAlt = y1;
@@ -345,7 +345,7 @@ void ST7735_draw_line( unsigned char x1, unsigned char y1,
 				else
 					yAlt = y;
 			}
-		} else {										// angle smaller 45°
+		} else {										// angle smaller 45ï¿½
 			// y1 must be smaller than y2
 			if(y1 > y2) {
 				xTmp = x1;

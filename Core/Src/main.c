@@ -23,10 +23,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "mma8452q.h"
-#include "st7735.h"
-#include "fonts.h"
-#include "testimg.h"
+
 
 /* USER CODE END Includes */
 
@@ -79,6 +76,7 @@ int main(void)
 {
   /* USER CODE BEGIN 1 */
 	AccData acc_3d;
+	state current_state = welcome_mode;
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -104,44 +102,43 @@ int main(void)
   MX_SPI3_Init();
   /* USER CODE BEGIN 2 */
 
+	// put all custom initialization functions here no matter which states they belong to
+	ST7735_Init();
+	mma8452qInit(&hi2c1);
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  	ST7735_Init();
-	mma8452qInit(&hi2c1);
+	switch (current_state) {
+		case welcome_mode:
+			// welcome mode code...
+			break;
+		case choose_mode:
+			// choose mode code...
+			break;
+		case step_mode:
+			// step mode code...
+			break;
+		case calorie_mode:
+			// calorie mode code...
+			break;
+		case main_mode:
+			// main mode code...
+			break;
+	}
 
 
-	  ST7735_FillScreen(ST7735_BLACK);
-	  ST7735_WriteString(5, 5, "STM32F401 Saat", Font_7x10, ST7735_WHITE, ST7735_BLACK);
-	  HAL_Delay(1000);
-	  ST7735_WriteString(5, 15, "uygulamasi", Font_7x10, ST7735_WHITE, ST7735_BLACK);
-	  HAL_Delay(250);
-	  ST7735_WriteString(5, 25, "aciliyor..", Font_7x10, ST7735_WHITE, ST7735_BLACK);
-	  HAL_Delay(1000);
-	  //sprintf(strtxt,"Prg Ver:%s",Prgver);
-	  //ST7735_WriteString(5, 35, strtxt, Font_7x10, ST7735_WHITE, ST7735_BLACK);
-	  HAL_Delay(3000);
 
-	  ST7735_FillScreen(ST7735_WHITE);
-	  ST7735_DrawImage(0,0,128,128,win10_logo);
+	welcomeScreen(&current_state);
 
-	  /*
-	  uint8_t scr = 0;
-	  uint8_t yzd = 0;
-	  for (scr=0;scr<128;scr++)
-	  {
-		  yzd = ((scr * 100)/128);
-		  ST7735_line_v(128,148,scr,1,ST7735_RED);
-		  sprintf(strtxt,"Loading:%03d",yzd+1);
-		  ST7735_WriteString(30, 150, strtxt, Font_7x10, ST7735_BLUE, ST7735_WHITE);
-		  HAL_Delay(10);
-	  }
-		*/
+	ST7735_FillScreen(ST7735_WHITE);
+	//ST7735_DrawImage(0,0,128,128,win10_logo);
 
-	  HAL_Delay(2000);
-	  ST7735_FillScreen(ST7735_WHITE);
-	  //ST7735_WriteString(0, 150, "www.digitalruh.com", Font_7x10, ST7735_BLACK, ST7735_WHITE);
+
+	HAL_Delay(2000);
+	ST7735_FillScreen(ST7735_WHITE);
+	//ST7735_WriteString(0, 150, "www.digitalruh.com", Font_7x10, ST7735_BLACK, ST7735_WHITE);
 
 	while (1)
 	{

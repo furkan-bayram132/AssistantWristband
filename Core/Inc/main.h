@@ -32,11 +32,22 @@ extern "C" {
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "custom_peripherals/mma8452q.h"
+#include "custom_peripherals/st7735.h"
+#include "custom_peripherals/fonts.h"
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/
 /* USER CODE BEGIN ET */
+
+/*
+ * welcome_mode : opening, etc state
+ * choose_mode : state where user chooses either calorie or step mode
+ * step_mode : step mode screen
+ * calorie_mode : calorie mode screen
+ * main_mode : state where the steps counted, user notifies, screen updated etc. main state, basically
+ * */
+typedef enum state {welcome_mode, choose_mode, step_mode, calorie_mode, main_mode} state;
 
 /* USER CODE END ET */
 
