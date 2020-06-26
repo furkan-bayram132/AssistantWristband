@@ -6,20 +6,20 @@
  */
 
 #include "states/welcome_mode.h"
-
+extern state current_state;
 /*
  * Fills opening screen in a fancy way:)
  * current_state : its value is changed here so that the next state can be executed.
  * */
-void welcomeScreen(state* current_state) {
+void welcomeScreen() {
 	char text1[] = " Wrist Band ";
 	char text2[] = "Hosgeldiniz ";
-	ST7735_FillScreen(BACKGROUND_COLOR);
+	ST7735_FillScreen(BACKGROUND_COLOR_WLC_MODE);
 
 	for (int i = 0; i < strlen(text1); ++i) {
 		text1[i] = '\0';
-		ST7735_WriteString(0, 50, text1, TEXT_FONT, TEXT_COLOR, TEXT_BACKGROUND_COLOR);
-		HAL_Delay(100);
+		ST7735_WriteString(0, 50, text1, TEXT_FONT_WLC_MODE, TEXT_COLOR_WLC_MODE, TEXT_BACKGROUND_COLOR_WLC_MODE);
+		HAL_Delay(25);
 		strcpy(text1, " Wrist Band ");
 	}
 
@@ -27,28 +27,30 @@ void welcomeScreen(state* current_state) {
 
 	for (int i = 0; i < strlen(text2); ++i) {
 		text2[i] = '\0';
-		ST7735_WriteString(0, 80, text2, TEXT_FONT, TEXT_COLOR, TEXT_BACKGROUND_COLOR);
-		HAL_Delay(100);
+		ST7735_WriteString(0, 80, text2, TEXT_FONT_WLC_MODE, TEXT_COLOR_WLC_MODE, TEXT_BACKGROUND_COLOR_WLC_MODE);
+		HAL_Delay(25);
 		strcpy(text2, "Hosgeldiniz ");
 	}
 
 	HAL_Delay(1000);
 
-	ST7735_FillScreen(BACKGROUND_COLOR);
-	ST7735_WriteString(0, 60, text1, TEXT_FONT, TEXT_COLOR, TEXT_BACKGROUND_COLOR);
-	ST7735_WriteString(0, 80, text2, TEXT_FONT, TEXT_COLOR, TEXT_BACKGROUND_COLOR);
-	HAL_Delay(500);
+	ST7735_FillScreen(BACKGROUND_COLOR_WLC_MODE);
+	ST7735_WriteString(0, 60, text1, TEXT_FONT_WLC_MODE, TEXT_COLOR_WLC_MODE, TEXT_BACKGROUND_COLOR_WLC_MODE);
+	ST7735_WriteString(0, 80, text2, TEXT_FONT_WLC_MODE, TEXT_COLOR_WLC_MODE, TEXT_BACKGROUND_COLOR_WLC_MODE);
+	HAL_Delay(250);
 
-	ST7735_FillScreen(BACKGROUND_COLOR);
-	ST7735_WriteString(0, 60, text1, TEXT_FONT, TEXT_COLOR, TEXT_BACKGROUND_COLOR);
-	ST7735_WriteString(0, 80, text2, TEXT_FONT, TEXT_COLOR, TEXT_BACKGROUND_COLOR);
-	HAL_Delay(500);
+	ST7735_FillScreen(BACKGROUND_COLOR_WLC_MODE);
+	ST7735_WriteString(0, 60, text1, TEXT_FONT_WLC_MODE, TEXT_COLOR_WLC_MODE, TEXT_BACKGROUND_COLOR_WLC_MODE);
+	ST7735_WriteString(0, 80, text2, TEXT_FONT_WLC_MODE, TEXT_COLOR_WLC_MODE, TEXT_BACKGROUND_COLOR_WLC_MODE);
+	HAL_Delay(250);
 
-	ST7735_FillScreen(BACKGROUND_COLOR);
-	ST7735_WriteString(0, 60, text1, TEXT_FONT, TEXT_COLOR, TEXT_BACKGROUND_COLOR);
-	ST7735_WriteString(0, 80, text2, TEXT_FONT, TEXT_COLOR, TEXT_BACKGROUND_COLOR);
-	HAL_Delay(500);
+	ST7735_FillScreen(BACKGROUND_COLOR_WLC_MODE);
+	ST7735_WriteString(0, 60, text1, TEXT_FONT_WLC_MODE, TEXT_COLOR_WLC_MODE, TEXT_BACKGROUND_COLOR_WLC_MODE);
+	ST7735_WriteString(0, 80, text2, TEXT_FONT_WLC_MODE, TEXT_COLOR_WLC_MODE, TEXT_BACKGROUND_COLOR_WLC_MODE);
+	HAL_Delay(250);
 
-	*current_state = choose_mode;
+	current_state = choose_mode;
 	HAL_Delay(1000);
+
+	ST7735_FillScreen(BACKGROUND_COLOR_WLC_MODE);
 }

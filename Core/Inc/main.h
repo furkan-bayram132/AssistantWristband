@@ -40,6 +40,7 @@ extern "C" {
 /* Exported types ------------------------------------------------------------*/
 /* USER CODE BEGIN ET */
 
+
 /*
  * welcome_mode : opening, etc state
  * choose_mode : state where user chooses either calorie or step mode
@@ -48,6 +49,10 @@ extern "C" {
  * main_mode : state where the steps counted, user notifies, screen updated etc. main state, basically
  * */
 typedef enum state {welcome_mode, choose_mode, step_mode, calorie_mode, main_mode} state;
+
+#include "states/welcome_mode.h" // have to be put after state enum definition since X_mode.h
+#include "states/choose_mode.h" // files require it
+
 
 /* USER CODE END ET */
 

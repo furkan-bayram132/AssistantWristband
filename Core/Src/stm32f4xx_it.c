@@ -25,6 +25,7 @@
 /* USER CODE BEGIN Includes */
 #include "custom_peripherals/st7735.h"
 #include "custom_peripherals/fonts.h"
+extern state current_state;
 //#include "testimg.h"
 /* USER CODE END Includes */
 
@@ -201,12 +202,16 @@ void SysTick_Handler(void)
 
 /**
   * @brief This function handles EXTI line0 interrupt.
+  * EXTI line0 interrupt is wired to right button.
   */
 void EXTI0_IRQHandler(void)
 {
   /* USER CODE BEGIN EXTI0_IRQn 0 */
 	if (HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_0)) {
-		  ST7735_WriteString(0, 150, "SAG BUTONA BASILDI", Font_7x10, ST7735_BLACK, ST7735_WHITE);
+		if (current_state == choose_mode) {
+			current_state = calorie_mode;
+		}
+
 	}
 
   /* USER CODE END EXTI0_IRQn 0 */
@@ -218,12 +223,13 @@ void EXTI0_IRQHandler(void)
 
 /**
   * @brief This function handles EXTI line1 interrupt.
+  * EXTI line1 interrupt is wired to middle button.
   */
 void EXTI1_IRQHandler(void)
 {
   /* USER CODE BEGIN EXTI1_IRQn 0 */
 	if (HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_1)) {
-	  ST7735_WriteString(0, 150, "ORTA BUTONA BASILDI", Font_7x10, ST7735_BLACK, ST7735_WHITE);
+	  //ST7735_WriteString(0, 150, "ORTA BUTONA BASILDI", Font_7x10, ST7735_BLACK, ST7735_WHITE);
 	}
   /* USER CODE END EXTI1_IRQn 0 */
   HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_1);
@@ -234,12 +240,15 @@ void EXTI1_IRQHandler(void)
 
 /**
   * @brief This function handles EXTI line2 interrupt.
+  * EXTI line2 interrupt is wired to left button.
   */
 void EXTI2_IRQHandler(void)
 {
   /* USER CODE BEGIN EXTI2_IRQn 0 */
 	if (HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_2)) {
-	  ST7735_WriteString(0, 150, "SOL BUTONA BASILDI", Font_7x10, ST7735_BLACK, ST7735_WHITE);
+		if (current_state == choose_mode) {
+			current_state = step_mode;
+		}
 	}
   /* USER CODE END EXTI2_IRQn 0 */
   HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_2);

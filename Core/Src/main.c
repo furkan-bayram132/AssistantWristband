@@ -64,7 +64,8 @@ static void MX_SPI3_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+state current_state = welcome_mode; // extern types of this global variable are defined under .c files
+// since multiple header files including may result multiple definitions of current_state variable.
 
 /* USER CODE END 0 */
 
@@ -76,7 +77,7 @@ int main(void)
 {
   /* USER CODE BEGIN 1 */
 	AccData acc_3d;
-	state current_state = welcome_mode;
+
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -110,28 +111,30 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-	switch (current_state) {
-		case welcome_mode:
-			// welcome mode code...
-			break;
-		case choose_mode:
-			// choose mode code...
-			break;
-		case step_mode:
-			// step mode code...
-			break;
-		case calorie_mode:
-			// calorie mode code...
-			break;
-		case main_mode:
-			// main mode code...
-			break;
+	while (1) {
+		switch (current_state) {
+			case welcome_mode:
+				welcomeScreen();
+				break;
+			case choose_mode:
+				chooseModeScreen();
+				break;
+			case step_mode:
+				// step mode code...
+				break;
+			case calorie_mode:
+				// calorie mode code...
+				break;
+			case main_mode:
+				// main mode code...
+				break;
+		}
 	}
 
 
 
-	welcomeScreen(&current_state);
 
+	/*
 	ST7735_FillScreen(ST7735_WHITE);
 	//ST7735_DrawImage(0,0,128,128,win10_logo);
 
@@ -165,11 +168,11 @@ int main(void)
 		else {
 			// uart ile buraya mesaj bas
 		}
-
+	*/
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-  }
+  //}
   /* USER CODE END 3 */
 }
 

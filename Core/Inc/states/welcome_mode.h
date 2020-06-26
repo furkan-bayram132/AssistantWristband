@@ -13,11 +13,13 @@
 
 #include <string.h>
 
-#define TEXT_FONT Font_11x18
-#define TEXT_COLOR ST7735_BLUE
-#define BACKGROUND_COLOR ST7735_BLACK
-#define TEXT_BACKGROUND_COLOR ST7735_BLACK
+#define TEXT_FONT_WLC_MODE Font_11x18
+#define TEXT_COLOR_WLC_MODE ST7735_BLUE
+#define BACKGROUND_COLOR_WLC_MODE ST7735_BLACK
+#define TEXT_BACKGROUND_COLOR_WLC_MODE ST7735_BLACK // defines the background of letters of the text
 
-void welcomeScreen(state* current_state);
+
+
+void welcomeScreen();
 
 #endif /* INC_WELCOME_MODE_H_ */
