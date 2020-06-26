@@ -2,7 +2,7 @@
  * welcome_mode.h
  *
  *  Created on: 26 Haz 2020
- *      Author: DELL
+ *      Author: hizirov
  */
 
 #ifndef INC_WELCOME_MODE_H_

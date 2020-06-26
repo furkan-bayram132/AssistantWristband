@@ -108,7 +108,7 @@ int main(void)
 	mma8452qInit(&hi2c1);
 
   /* USER CODE END 2 */
-
+	uint8_t step_mode_first_entrance = 0;
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
 	while (1) {
@@ -120,7 +120,11 @@ int main(void)
 				chooseModeScreen();
 				break;
 			case step_mode:
-				// step mode code...
+				if (!step_mode_first_entrance) {
+					ST7735_FillScreen(BACKGROUND_COLOR_STP_MODE);
+					++step_mode_first_entrance;
+				}
+				stepScreen();
 				break;
 			case calorie_mode:
 				// calorie mode code...

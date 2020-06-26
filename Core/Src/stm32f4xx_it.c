@@ -209,6 +209,7 @@ void EXTI0_IRQHandler(void)
   /* USER CODE BEGIN EXTI0_IRQn 0 */
 	if (HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_0)) {
 		if (current_state == choose_mode) {
+			//ST7735_FillScreen(BACKGROUND_COLOR_CHS_MODE);
 			current_state = calorie_mode;
 		}
 
@@ -247,6 +248,7 @@ void EXTI2_IRQHandler(void)
   /* USER CODE BEGIN EXTI2_IRQn 0 */
 	if (HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_2)) {
 		if (current_state == choose_mode) {
+			//ST7735_FillScreen(BACKGROUND_COLOR_CHS_MODE);
 			current_state = step_mode;
 		}
 	}

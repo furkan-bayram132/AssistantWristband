@@ -51,6 +51,6 @@ void welcomeScreen() {
 
 	current_state = choose_mode;
 	HAL_Delay(1000);
-
 	ST7735_FillScreen(BACKGROUND_COLOR_WLC_MODE);
+
 }
