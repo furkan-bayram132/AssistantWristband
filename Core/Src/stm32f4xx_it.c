@@ -209,7 +209,6 @@ void EXTI0_IRQHandler(void)
   /* USER CODE BEGIN EXTI0_IRQn 0 */
 	if (HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_0)) {
 		if (current_state == choose_mode) {
-			//ST7735_FillScreen(BACKGROUND_COLOR_CHS_MODE);
 			current_state = calorie_mode;
 		}
 
@@ -230,7 +229,7 @@ void EXTI1_IRQHandler(void)
 {
   /* USER CODE BEGIN EXTI1_IRQn 0 */
 	if (HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_1)) {
-	  //ST7735_WriteString(0, 150, "ORTA BUTONA BASILDI", Font_7x10, ST7735_BLACK, ST7735_WHITE);
+
 	}
   /* USER CODE END EXTI1_IRQn 0 */
   HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_1);
@@ -248,7 +247,6 @@ void EXTI2_IRQHandler(void)
   /* USER CODE BEGIN EXTI2_IRQn 0 */
 	if (HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_2)) {
 		if (current_state == choose_mode) {
-			//ST7735_FillScreen(BACKGROUND_COLOR_CHS_MODE);
 			current_state = step_mode;
 		}
 	}

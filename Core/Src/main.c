@@ -109,6 +109,7 @@ int main(void)
 
   /* USER CODE END 2 */
 	uint8_t step_mode_first_entrance = 0;
+	uint8_t calorie_mode_first_entrance = 0;
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
 	while (1) {
@@ -121,13 +122,19 @@ int main(void)
 				break;
 			case step_mode:
 				if (!step_mode_first_entrance) {
+					// clear screen at the beginning of the new screen
 					ST7735_FillScreen(BACKGROUND_COLOR_STP_MODE);
 					++step_mode_first_entrance;
 				}
 				stepScreen();
 				break;
 			case calorie_mode:
-				// calorie mode code...
+				if (!calorie_mode_first_entrance) {
+					// clear screen at the beginning of the new screen
+					ST7735_FillScreen(BACKGROUND_COLOR_CLR_MODE);
+					++calorie_mode_first_entrance;
+				}
+				calorieScreen();
 				break;
 			case main_mode:
 				// main mode code...
