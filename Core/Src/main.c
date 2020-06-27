@@ -66,6 +66,7 @@ static void MX_SPI3_Init(void);
 /* USER CODE BEGIN 0 */
 state current_state = welcome_mode; // extern types of this global variable are defined under .c files
 // since multiple header files including may result multiple definitions of current_state variable.
+uint32_t step_num = 1000;
 
 /* USER CODE END 0 */
 
@@ -86,7 +87,8 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
-
+  uint8_t step_mode_first_entrance = 0;
+  uint8_t calorie_mode_first_entrance = 0;
   /* USER CODE END Init */
 
   /* Configure the system clock */
@@ -108,8 +110,7 @@ int main(void)
 	mma8452qInit(&hi2c1);
 
   /* USER CODE END 2 */
-	uint8_t step_mode_first_entrance = 0;
-	uint8_t calorie_mode_first_entrance = 0;
+
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
 	while (1) {
@@ -121,23 +122,49 @@ int main(void)
 				chooseModeScreen();
 				break;
 			case step_mode:
-				if (!step_mode_first_entrance) {
+				/*if (!step_mode_first_entrance) {
 					// clear screen at the beginning of the new screen
 					ST7735_FillScreen(BACKGROUND_COLOR_STP_MODE);
 					++step_mode_first_entrance;
-				}
-				stepScreen();
+				}*/
+				stepScreen(step_num);
 				break;
 			case calorie_mode:
-				if (!calorie_mode_first_entrance) {
+				/*if (!calorie_mode_first_entrance) {
 					// clear screen at the beginning of the new screen
 					ST7735_FillScreen(BACKGROUND_COLOR_CLR_MODE);
 					++calorie_mode_first_entrance;
-				}
+				}*/
 				calorieScreen();
 				break;
 			case main_mode:
 				// main mode code...
+				while (1)
+				{
+					HAL_StatusTypeDef is_mma8452q_read_ok = mma8452qRead(&hi2c1, 0x00, 7, acc_3d.acc_info);
+					if (is_mma8452q_read_ok == HAL_OK) {
+						getAccXYZ(&acc_3d);
+						char message[50] = { 0 };
+						//sprintf(message, "acc_x: %d, acc_y: %d, acc_z: %d\r\n", acc_3d.x_acc, acc_3d.y_acc, acc_3d.z_acc);
+						double x_acc = acc_3d.x_acc / 1024.;
+						double y_acc = acc_3d.y_acc / 1024.;
+						double z_acc = acc_3d.z_acc / 1024.;
+						double magnitude = sqrt((x_acc * x_acc) + (y_acc * y_acc) + (z_acc * z_acc));
+						sprintf(message, "%.2f %.2f %.2f \r\n", x_acc, y_acc, z_acc);
+						ST7735_WriteString(0, 50, message, Font_7x10, ST7735_BLACK, ST7735_WHITE);
+						HAL_StatusTypeDef blue_ok = HAL_UART_Transmit(&huart6, (uint8_t *)message, sizeof(message), 100);
+							if (blue_ok == HAL_OK) {
+								ST7735_WriteString(0, 100, "ok...", Font_7x10, ST7735_BLACK, ST7735_WHITE);
+							}
+							else {
+								ST7735_WriteString(0, 100, "not ok...", Font_7x10, ST7735_BLACK, ST7735_WHITE);
+							}
+						HAL_Delay(100);
+					}
+					else {
+						// uart ile buraya mesaj bas
+					}
+				}
 				break;
 		}
 	}
@@ -145,7 +172,7 @@ int main(void)
 
 
 
-	/*
+
 	ST7735_FillScreen(ST7735_WHITE);
 	//ST7735_DrawImage(0,0,128,128,win10_logo);
 
@@ -154,36 +181,11 @@ int main(void)
 	ST7735_FillScreen(ST7735_WHITE);
 	//ST7735_WriteString(0, 150, "www.digitalruh.com", Font_7x10, ST7735_BLACK, ST7735_WHITE);
 
-	while (1)
-	{
-		HAL_StatusTypeDef is_mma8452q_read_ok = mma8452qRead(&hi2c1, 0x00, 7, acc_3d.acc_info);
-		if (is_mma8452q_read_ok == HAL_OK) {
-			getAccXYZ(&acc_3d);
-			char message[50] = { 0 };
-			//sprintf(message, "acc_x: %d, acc_y: %d, acc_z: %d\r\n", acc_3d.x_acc, acc_3d.y_acc, acc_3d.z_acc);
-			double x_acc = acc_3d.x_acc / 1024.;
-			double y_acc = acc_3d.y_acc / 1024.;
-			double z_acc = acc_3d.z_acc / 1024.;
-			double magnitude = sqrt((x_acc * x_acc) + (y_acc * y_acc) + (z_acc * z_acc));
-			sprintf(message, "%.2f %.2f %.2f \r\n", x_acc, y_acc, z_acc);
-			ST7735_WriteString(0, 50, message, Font_7x10, ST7735_BLACK, ST7735_WHITE);
-			HAL_StatusTypeDef blue_ok = HAL_UART_Transmit(&huart6, (uint8_t *)message, sizeof(message), 100);
-				if (blue_ok == HAL_OK) {
-					ST7735_WriteString(0, 100, "ok...", Font_7x10, ST7735_BLACK, ST7735_WHITE);
-				}
-				else {
-					ST7735_WriteString(0, 100, "not ok...", Font_7x10, ST7735_BLACK, ST7735_WHITE);
-				}
-			HAL_Delay(100);
-		}
-		else {
-			// uart ile buraya mesaj bas
-		}
-	*/
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-  //}
+
   /* USER CODE END 3 */
 }
 
@@ -359,9 +361,9 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(DISP_CS_GPIO_Port, DISP_CS_Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pins : sag_Pin orta_Pin sol_Pin */
-  GPIO_InitStruct.Pin = sag_Pin|orta_Pin|sol_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
+  /*Configure GPIO pins : PC0 PC1 PC2 */
+  GPIO_InitStruct.Pin = GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_2;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_PULLDOWN;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
@@ -385,16 +387,6 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(DISP_CS_GPIO_Port, &GPIO_InitStruct);
-
-  /* EXTI interrupt init*/
-  HAL_NVIC_SetPriority(EXTI0_IRQn, 0, 0);
-  HAL_NVIC_EnableIRQ(EXTI0_IRQn);
-
-  HAL_NVIC_SetPriority(EXTI1_IRQn, 0, 0);
-  HAL_NVIC_EnableIRQ(EXTI1_IRQn);
-
-  HAL_NVIC_SetPriority(EXTI2_IRQn, 0, 0);
-  HAL_NVIC_EnableIRQ(EXTI2_IRQn);
 
 }
 
