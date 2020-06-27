@@ -66,6 +66,7 @@ static void MX_SPI3_Init(void);
 /* USER CODE BEGIN 0 */
 state current_state = welcome_mode; // extern types of this global variable are defined under .c files
 // since multiple header files including may result multiple definitions of current_state variable.
+
 uint32_t step_num = 1000;
 
 /* USER CODE END 0 */
@@ -78,7 +79,8 @@ int main(void)
 {
   /* USER CODE BEGIN 1 */
 	AccData acc_3d;
-
+	CalorieInfo person_cal_info;
+	CalorieState calorie_state = calorie_height_mode;
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -87,8 +89,7 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
-  uint8_t step_mode_first_entrance = 0;
-  uint8_t calorie_mode_first_entrance = 0;
+
   /* USER CODE END Init */
 
   /* Configure the system clock */
@@ -108,6 +109,7 @@ int main(void)
 	// put all custom initialization functions here no matter which states they belong to
 	ST7735_Init();
 	mma8452qInit(&hi2c1);
+	initCalorieMode(&person_cal_info);
 
   /* USER CODE END 2 */
 
@@ -122,20 +124,10 @@ int main(void)
 				chooseModeScreen();
 				break;
 			case step_mode:
-				/*if (!step_mode_first_entrance) {
-					// clear screen at the beginning of the new screen
-					ST7735_FillScreen(BACKGROUND_COLOR_STP_MODE);
-					++step_mode_first_entrance;
-				}*/
 				stepScreen(step_num);
 				break;
 			case calorie_mode:
-				/*if (!calorie_mode_first_entrance) {
-					// clear screen at the beginning of the new screen
-					ST7735_FillScreen(BACKGROUND_COLOR_CLR_MODE);
-					++calorie_mode_first_entrance;
-				}*/
-				calorieScreen();
+				calorieScreen(&calorie_state, &person_cal_info);
 				break;
 			case main_mode:
 				// main mode code...
@@ -149,7 +141,7 @@ int main(void)
 						double x_acc = acc_3d.x_acc / 1024.;
 						double y_acc = acc_3d.y_acc / 1024.;
 						double z_acc = acc_3d.z_acc / 1024.;
-						double magnitude = sqrt((x_acc * x_acc) + (y_acc * y_acc) + (z_acc * z_acc));
+						//double magnitude = sqrt((x_acc * x_acc) + (y_acc * y_acc) + (z_acc * z_acc));
 						sprintf(message, "%.2f %.2f %.2f \r\n", x_acc, y_acc, z_acc);
 						ST7735_WriteString(0, 50, message, Font_7x10, ST7735_BLACK, ST7735_WHITE);
 						HAL_StatusTypeDef blue_ok = HAL_UART_Transmit(&huart6, (uint8_t *)message, sizeof(message), 100);
