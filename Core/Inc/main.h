@@ -57,7 +57,7 @@ typedef enum state {welcome_mode, choose_mode, step_mode, calorie_mode, main_mod
 #include "states/choose_mode.h" // files require it
 #include "states/step_mode.h"
 #include "states/calorie_mode.h"
-
+#include "states/main_mode.h"
 
 
 

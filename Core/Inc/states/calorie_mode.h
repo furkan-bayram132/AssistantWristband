@@ -26,7 +26,6 @@ typedef struct CalorieInfo {
 void initCalorieMode(CalorieInfo* person_cal_info);
 void calorieScreen(CalorieState* calorie_mode, CalorieInfo* person_cal_info);
 
-
 void calorieHeightMode(CalorieState* calorie_mode, CalorieInfo* person_cal_info);
 void calorieWeightMode(CalorieState* calorie_mode, CalorieInfo* person_cal_info);
 void calorieAmountMode(CalorieState* calorie_mode, CalorieInfo* person_cal_info);

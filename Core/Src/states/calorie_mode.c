@@ -132,7 +132,7 @@ void calorieAmountMode(CalorieState* calorie_mode, CalorieInfo* person_cal_info)
 			ST7735_FillScreen(BACKGROUND_COLOR_STP_MODE);
 			return; // so that the WriteString functions below are not both, executed and displayed on the screen.
 	}
-	else if (HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_2) && (person_cal_info->weight > 30)) {
+	else if (HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_2) && (person_cal_info->calorie_amount > 1000)) {
 		// C2 connected to the left button
 		while (HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_2))
 			;
