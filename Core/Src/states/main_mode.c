@@ -21,8 +21,11 @@ void mainScreen(const CalorieInfo *person_cal_info) {
 	// this only means one thing: the mode is step mode, not calorie mode because if it was otherwise, calorie_unit would be initialized
 		char text1[25] = { 0 };
 		sprintf(text1, " %ld / %ld step done", current_step, step_num);
+		uint32_t eta_time = ((step_num - current_step) * 1) / current_step; // 1 : gecen sure ile degisecek
+		char text2[25] = { 0 };
+		sprintf(text2, "   ETA:  %ld", eta_time);
 		ST7735_WriteString(0, 50, text1, TEXT_FONT_MAIN_MODE, TEXT_COLOR_MAIN_MODE, TEXT_BACKGROUND_COLOR_MAIN_MODE);
-		ST7735_WriteString(0, 100, " Calorie Mode (R)", TEXT_FONT_MAIN_MODE, TEXT_COLOR_MAIN_MODE, TEXT_BACKGROUND_COLOR_MAIN_MODE);
+		ST7735_WriteString(0, 100, text2, TEXT_FONT_MAIN_MODE, TEXT_COLOR_MAIN_MODE, TEXT_BACKGROUND_COLOR_MAIN_MODE);
 
 	}
 	else {
