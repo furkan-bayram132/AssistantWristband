@@ -9,6 +9,18 @@
 
 extern state current_state;
 
+// limit values for those whose height is lower lower than 5'5''
+uint8_t limit_vals_5_5[10][2] = {{45,23}, {55,28}, {64,32}, {73,36}, {82,41},
+							 {91,45}, {100,50}, {114,57}, {125,63}, {136,68}};
+
+// limit values for those whose height is higher than 5'6'' and lower than 5'11''
+uint8_t limit_vals_5_6_5_11[10][2] = {{45,25}, {55,30}, {64,35}, {73,40}, {82,45},
+							 {91,50}, {100,55}, {114,62}, {125,68}, {136,75}};
+
+// limit values for those whose height is higher than 6'
+uint8_t limit_vals_6[10][2] = {{45,28}, {55,33}, {64,38}, {73,44}, {82,49},
+							 {91,55}, {100,60}, {114,69}, {125,75}, {136,82}};
+
 
 
 void calorieScreen(CalorieState* calorie_mode, CalorieInfo* person_cal_info) {
@@ -21,6 +33,9 @@ void calorieScreen(CalorieState* calorie_mode, CalorieInfo* person_cal_info) {
 			break;
 		case calorie_amount_mode:
 			calorieAmountMode(calorie_mode, person_cal_info);
+			break;
+		case calorie_step_mode:
+			calorieStepMode(person_cal_info);
 			break;
 	}
 }
@@ -128,8 +143,7 @@ void calorieAmountMode(CalorieState* calorie_mode, CalorieInfo* person_cal_info)
 			while (HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_2))
 				;
 			HAL_Delay(300);
-			current_state = main_mode;
-			ST7735_FillScreen(BACKGROUND_COLOR_STP_MODE);
+			*calorie_mode = calorie_step_mode;
 			return; // so that the WriteString functions below are not both, executed and displayed on the screen.
 	}
 	else if (HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_2) && (person_cal_info->calorie_amount > 1000)) {
@@ -156,4 +170,62 @@ void calorieAmountMode(CalorieState* calorie_mode, CalorieInfo* person_cal_info)
 
 }
 
+
+void calorieStepMode(CalorieInfo* person_cal_info) {
+	if (person_cal_info->height <= 165) {
+		// https://www.verywellfit.com/pedometer-steps-to-calories-converter-3882595
+		//Ainsworth BE, Haskell WL, Herrmann SD, et al. 2011 Compendium of Physical Activities:
+		//a second update of codes and MET values. Med Sci Sports Exerc.
+		//2011;43(8):1575-81. doi:10.1249/mss.0b013e31821ece12
+		// simplified version of the article above(for three different height ranges, the amount of
+		// calorie burned calculated only based on 1000 steps).
+		//limit_vals[x][0] : weight, limit_vals[x][1] : amount of calories / 1000 steps
+		calculateStepNum(person_cal_info, limit_vals_5_5);
+	}
+	else if ((person_cal_info->height > 165) && (person_cal_info->height < 180)) {
+		calculateStepNum(person_cal_info, limit_vals_5_6_5_11);
+	}
+	else { // person_cal_info->height >= 180
+		calculateStepNum(person_cal_info, limit_vals_6);
+	}
+	current_state = main_mode;
+	ST7735_FillScreen(BACKGROUND_COLOR_STP_MODE);
+}
+
+
+void calculateStepNum(CalorieInfo* person_cal_info, uint8_t limit_vals[10][2]) {
+	if (person_cal_info->weight <= 45) {
+		person_cal_info->step_num = person_cal_info->calorie_amount / 23;
+	}
+	else if (person_cal_info->weight <= limit_vals[0][0]) {
+		person_cal_info->step_num = person_cal_info->calorie_amount / limit_vals[0][1];
+	}
+	else if (person_cal_info->weight <= limit_vals[1][0]) {
+		person_cal_info->step_num = person_cal_info->calorie_amount / limit_vals[1][1];
+	}
+	else if (person_cal_info->weight <= limit_vals[2][0]) {
+		person_cal_info->step_num = person_cal_info->calorie_amount / limit_vals[2][1];
+	}
+	else if (person_cal_info->weight <= limit_vals[3][0]) {
+		person_cal_info->step_num = person_cal_info->calorie_amount / limit_vals[3][1];
+	}
+	else if (person_cal_info->weight <= limit_vals[4][0]) {
+		person_cal_info->step_num = person_cal_info->calorie_amount / limit_vals[4][1];
+	}
+	else if (person_cal_info->weight <= limit_vals[5][0]) {
+		person_cal_info->step_num = person_cal_info->calorie_amount / limit_vals[5][1];
+	}
+	else if (person_cal_info->weight <= limit_vals[6][0]) {
+		person_cal_info->step_num = person_cal_info->calorie_amount / limit_vals[6][1];
+	}
+	else if (person_cal_info->weight <= limit_vals[7][0]) {
+		person_cal_info->step_num = person_cal_info->calorie_amount / limit_vals[7][1];
+	}
+	else if (person_cal_info->weight <= limit_vals[8][0]) {
+		person_cal_info->step_num = person_cal_info->calorie_amount / limit_vals[8][1];
+	}
+	else if (person_cal_info->weight <= limit_vals[9][0]) {
+		person_cal_info->step_num = person_cal_info->calorie_amount / limit_vals[9][1];
+	}
+}
 
