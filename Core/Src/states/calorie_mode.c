@@ -8,6 +8,7 @@
 #include "states/calorie_mode.h"
 
 extern state current_state;
+extern uint32_t step_num;
 
 // limit values for those whose height is lower lower than 5'5''
 uint8_t limit_vals_5_5[10][2] = {{45,23}, {55,28}, {64,32}, {73,36}, {82,41},
@@ -228,5 +229,6 @@ void calculateStepNum(CalorieInfo* person_cal_info, uint8_t limit_vals[10][2]) {
 	else if (person_cal_info->weight <= limit_vals[9][0]) {
 		person_cal_info->step_num = (1000 * person_cal_info->calorie_amount) / limit_vals[9][1];
 	}
+	step_num = person_cal_info->step_num;
 }
 
