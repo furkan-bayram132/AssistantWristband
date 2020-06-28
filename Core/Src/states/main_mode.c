@@ -8,11 +8,29 @@
 
 #include "states/main_mode.h"
 
+
 extern I2C_HandleTypeDef hi2c1;
 extern SPI_HandleTypeDef hspi3;
 extern UART_HandleTypeDef huart6;
 
-void mainScreen() {
+extern uint32_t current_step;
+
+void mainScreen(const CalorieInfo *person_cal_info) {
+	if (!person_cal_info->calorie_unit) { // if it is zero, it means never assigned a value to it after initializing
+	// this only means one thing: the mode is step mode, not calorie mode because if it was otherwise, calorie_unit would be initialized
+		char text1[25] = { 0 };
+		sprintf(text1, " %ld / %ld step done", current_step, person_cal_info->step_num);
+		ST7735_WriteString(0, 50, text1, TEXT_FONT_MAIN_MODE, TEXT_COLOR_MAIN_MODE, TEXT_BACKGROUND_COLOR_MAIN_MODE);
+		ST7735_WriteString(0, 100, " Calorie Mode (R)", TEXT_FONT_MAIN_MODE, TEXT_COLOR_MAIN_MODE, TEXT_BACKGROUND_COLOR_MAIN_MODE);
+
+	}
+	else {
+
+	}
+}
+
+
+void getAccData() {
 	AccData acc_3d;
 	while (1)
 	{

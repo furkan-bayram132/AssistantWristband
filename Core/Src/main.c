@@ -21,6 +21,11 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 
+#include "states/welcome_mode.h"
+#include "states/calorie_mode.h"
+#include "states/choose_mode.h"
+#include "states/main_mode.h"
+#include "states/step_mode.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
@@ -66,7 +71,7 @@ static void MX_SPI3_Init(void);
 /* USER CODE BEGIN 0 */
 state current_state = welcome_mode; // extern types of this global variable are defined under .c files
 // since multiple header files including may result multiple definitions of current_state variable.
-
+uint32_t current_step = 0;
 uint32_t step_num = 1000;
 
 /* USER CODE END 0 */
@@ -129,7 +134,7 @@ int main(void)
 				calorieScreen(&calorie_state, &person_cal_info);
 				break;
 			case main_mode:
-				mainScreen();
+				mainScreen(&person_cal_info);
 				break;
 		}
 	}

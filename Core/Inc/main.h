@@ -53,12 +53,6 @@ typedef enum state {welcome_mode, choose_mode, step_mode, calorie_mode, main_mod
 #include <stdio.h>
 #include <math.h>
 
-#include "states/welcome_mode.h" // have to be put after state enum definition since X_mode.h
-#include "states/choose_mode.h" // files require it
-#include "states/step_mode.h"
-#include "states/calorie_mode.h"
-#include "states/main_mode.h"
-
 
 
 /* USER CODE END ET */

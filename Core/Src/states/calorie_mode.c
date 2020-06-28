@@ -45,6 +45,7 @@ void initCalorieMode(CalorieInfo* person_cal_info) {
 	person_cal_info->height = 160;
 	person_cal_info->weight = 60;
 	person_cal_info->calorie_amount = 1000;
+	person_cal_info->calorie_unit = 0;
 }
 
 
@@ -136,7 +137,7 @@ void calorieAmountMode(CalorieState* calorie_mode, CalorieInfo* person_cal_info)
 		while (HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_0))
 			;
 		HAL_Delay(300);
-		person_cal_info->calorie_amount += 1000;
+		person_cal_info->calorie_amount += 100;
 	}
 	else if (HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_1)) {
 		// C1 connected to the middle button
@@ -146,12 +147,12 @@ void calorieAmountMode(CalorieState* calorie_mode, CalorieInfo* person_cal_info)
 			*calorie_mode = calorie_step_mode;
 			return; // so that the WriteString functions below are not both, executed and displayed on the screen.
 	}
-	else if (HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_2) && (person_cal_info->calorie_amount > 1000)) {
+	else if (HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_2) && (person_cal_info->calorie_amount > 100)) {
 		// C2 connected to the left button
 		while (HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_2))
 			;
 		HAL_Delay(300);
-		person_cal_info->calorie_amount -= 1000;
+		person_cal_info->calorie_amount -= 100;
 	}
 
 	ST7735_WriteString(0, 20, "(L) : - \\/ + : (R)", TEXT_FONT_CLR_MODE, TEXT_COLOR_CLR_MODE, BACKGROUND_COLOR_CLR_MODE);
@@ -195,37 +196,37 @@ void calorieStepMode(CalorieInfo* person_cal_info) {
 
 void calculateStepNum(CalorieInfo* person_cal_info, uint8_t limit_vals[10][2]) {
 	if (person_cal_info->weight <= 45) {
-		person_cal_info->step_num = person_cal_info->calorie_amount / 23;
+		person_cal_info->step_num = (1000 * person_cal_info->calorie_amount) / limit_vals[0][0];
 	}
 	else if (person_cal_info->weight <= limit_vals[0][0]) {
-		person_cal_info->step_num = person_cal_info->calorie_amount / limit_vals[0][1];
+		person_cal_info->step_num = (1000 * person_cal_info->calorie_amount) / limit_vals[0][1];
 	}
 	else if (person_cal_info->weight <= limit_vals[1][0]) {
-		person_cal_info->step_num = person_cal_info->calorie_amount / limit_vals[1][1];
+		person_cal_info->step_num = (1000 * person_cal_info->calorie_amount) / limit_vals[1][1];
 	}
 	else if (person_cal_info->weight <= limit_vals[2][0]) {
-		person_cal_info->step_num = person_cal_info->calorie_amount / limit_vals[2][1];
+		person_cal_info->step_num = (1000 * person_cal_info->calorie_amount) / limit_vals[2][1];
 	}
 	else if (person_cal_info->weight <= limit_vals[3][0]) {
-		person_cal_info->step_num = person_cal_info->calorie_amount / limit_vals[3][1];
+		person_cal_info->step_num = (1000 * person_cal_info->calorie_amount) / limit_vals[3][1];
 	}
 	else if (person_cal_info->weight <= limit_vals[4][0]) {
-		person_cal_info->step_num = person_cal_info->calorie_amount / limit_vals[4][1];
+		person_cal_info->step_num = (1000 * person_cal_info->calorie_amount) / limit_vals[4][1];
 	}
 	else if (person_cal_info->weight <= limit_vals[5][0]) {
-		person_cal_info->step_num = person_cal_info->calorie_amount / limit_vals[5][1];
+		person_cal_info->step_num = (1000 * person_cal_info->calorie_amount) / limit_vals[5][1];
 	}
 	else if (person_cal_info->weight <= limit_vals[6][0]) {
-		person_cal_info->step_num = person_cal_info->calorie_amount / limit_vals[6][1];
+		person_cal_info->step_num = (1000 * person_cal_info->calorie_amount) / limit_vals[6][1];
 	}
 	else if (person_cal_info->weight <= limit_vals[7][0]) {
-		person_cal_info->step_num = person_cal_info->calorie_amount / limit_vals[7][1];
+		person_cal_info->step_num = (1000 * person_cal_info->calorie_amount) / limit_vals[7][1];
 	}
 	else if (person_cal_info->weight <= limit_vals[8][0]) {
-		person_cal_info->step_num = person_cal_info->calorie_amount / limit_vals[8][1];
+		person_cal_info->step_num = (1000 * person_cal_info->calorie_amount) / limit_vals[8][1];
 	}
 	else if (person_cal_info->weight <= limit_vals[9][0]) {
-		person_cal_info->step_num = person_cal_info->calorie_amount / limit_vals[9][1];
+		person_cal_info->step_num = (1000 * person_cal_info->calorie_amount) / limit_vals[9][1];
 	}
 }
 
