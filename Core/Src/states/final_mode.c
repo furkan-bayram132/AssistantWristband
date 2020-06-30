@@ -23,9 +23,6 @@ void finalModeScreen(const CalorieInfo *person_cal_info) {
 		if (mode_state == step_mode) { // step mode
 			sprintf(t1, " %ld step taken", step_num);
 			ST7735_WriteString(0, 70, t1, TEXT_FONT_FNL_MODE, TEXT_COLOR_FNL_MODE, BACKGROUND_COLOR_FNL_MODE);
-			//sprintf(t1, "eta:%ld, step:%ld, elapsed:%ld, current:%ld", eta_time, step_num, elapsed_time, current_step);
-			//ST7735_WriteString(0, 70, t1, TEXT_FONT_FNL_MODE, TEXT_COLOR_FNL_MODE, BACKGROUND_COLOR_FNL_MODE);
-
 		}
 		else { // calorie mode
 			char t3[20] = { 0 };
@@ -39,11 +36,11 @@ void finalModeScreen(const CalorieInfo *person_cal_info) {
 		ST7735_WriteString(0, 100, t4, TEXT_FONT_FNL_MODE, TEXT_COLOR_FNL_MODE, BACKGROUND_COLOR_FNL_MODE);
 		ST7735_WriteString(0, 130, "==================", TEXT_FONT_FNL_MODE, TEXT_COLOR_FNL_MODE, BACKGROUND_COLOR_FNL_MODE);
 
-		HAL_Delay(1000);
-		ST7735_FillScreen(BACKGROUND_COLOR_FNL_MODE);
-
 		if (HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_1)) {
 			current_state = choose_mode;
+			current_step = 1;
+			step_num = 1000;
+			elapsed_time = 1;
 			break;
 		}
 	}
