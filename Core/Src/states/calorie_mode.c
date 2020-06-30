@@ -10,15 +10,15 @@
 extern state current_state;
 extern uint32_t step_num;
 
-// limit values for those whose height is lower lower than 5'5''
+// limit values for those whose height is lower lower than 5'5'' : 165 cm
 uint8_t limit_vals_5_5[10][2] = {{45,23}, {55,28}, {64,32}, {73,36}, {82,41},
 							 {91,45}, {100,50}, {114,57}, {125,63}, {136,68}};
 
-// limit values for those whose height is higher than 5'6'' and lower than 5'11''
+// limit values for those whose height is higher than 5'6'' and lower than 5'11'' : 165 cm - 180 cm
 uint8_t limit_vals_5_6_5_11[10][2] = {{45,25}, {55,30}, {64,35}, {73,40}, {82,45},
 							 {91,50}, {100,55}, {114,62}, {125,68}, {136,75}};
 
-// limit values for those whose height is higher than 6'
+// limit values for those whose height is higher than 6' : 180 cm
 uint8_t limit_vals_6[10][2] = {{45,28}, {55,33}, {64,38}, {73,44}, {82,49},
 							 {91,55}, {100,60}, {114,69}, {125,75}, {136,82}};
 
@@ -46,7 +46,6 @@ void initCalorieMode(CalorieInfo* person_cal_info) {
 	person_cal_info->height = 160;
 	person_cal_info->weight = 60;
 	person_cal_info->calorie_amount = 1000;
-	person_cal_info->calorie_unit = 0;
 }
 
 
@@ -197,7 +196,7 @@ void calorieStepMode(CalorieInfo* person_cal_info) {
 
 void calculateStepNum(CalorieInfo* person_cal_info, uint8_t limit_vals[10][2]) {
 	if (person_cal_info->weight <= 45) {
-		person_cal_info->step_num = (1000 * person_cal_info->calorie_amount) / limit_vals[0][0];
+		person_cal_info->step_num = (1000 * person_cal_info->calorie_amount) / limit_vals[0][1];
 	}
 	else if (person_cal_info->weight <= limit_vals[0][0]) {
 		person_cal_info->step_num = (1000 * person_cal_info->calorie_amount) / limit_vals[0][1];
@@ -226,7 +225,7 @@ void calculateStepNum(CalorieInfo* person_cal_info, uint8_t limit_vals[10][2]) {
 	else if (person_cal_info->weight <= limit_vals[8][0]) {
 		person_cal_info->step_num = (1000 * person_cal_info->calorie_amount) / limit_vals[8][1];
 	}
-	else if (person_cal_info->weight <= limit_vals[9][0]) {
+	else {
 		person_cal_info->step_num = (1000 * person_cal_info->calorie_amount) / limit_vals[9][1];
 	}
 	step_num = person_cal_info->step_num;

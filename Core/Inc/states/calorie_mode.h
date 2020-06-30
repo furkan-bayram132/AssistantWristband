@@ -25,7 +25,6 @@ typedef struct CalorieInfo {
 	uint8_t weight;
 	uint16_t calorie_amount;
 	uint32_t step_num;
-	uint8_t calorie_unit;
 } CalorieInfo;
 
 void initCalorieMode(CalorieInfo* person_cal_info);

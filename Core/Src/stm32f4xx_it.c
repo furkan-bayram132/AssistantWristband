@@ -208,7 +208,7 @@ void TIM3_IRQHandler(void)
   /* USER CODE BEGIN TIM3_IRQn 0 */
 
   if (current_state == main_mode) {
-	  current_step += 1;
+	  current_step += 50;
 	  elapsed_time += 1;
   }
 

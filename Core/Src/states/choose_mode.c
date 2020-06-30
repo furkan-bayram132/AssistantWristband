@@ -8,6 +8,7 @@
 #include "states/choose_mode.h"
 
 extern state current_state;
+extern state mode_state;
 
 void chooseModeScreen() {
 	if (HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_0)) {
@@ -16,6 +17,7 @@ void chooseModeScreen() {
 			;
 		HAL_Delay(300);
 		current_state = calorie_mode;
+		mode_state = calorie_mode;
 		ST7735_FillScreen(BACKGROUND_COLOR_CHS_MODE);
 		return;
 	}
@@ -24,6 +26,7 @@ void chooseModeScreen() {
 		while (HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_2))
 			;
 		current_state = step_mode;
+		mode_state = step_mode;
 		ST7735_FillScreen(BACKGROUND_COLOR_CHS_MODE);
 		return;
 	}

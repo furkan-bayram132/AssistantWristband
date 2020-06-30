@@ -73,9 +73,10 @@ static void MX_TIM3_Init(void);
 /* USER CODE BEGIN 0 */
 state current_state = welcome_mode; // extern types of this global variable are defined under .c files
 // since multiple header files including may result multiple definitions of current_state variable.
-uint32_t current_step = 0;
+state mode_state;
+uint32_t current_step = 1;
 uint32_t step_num = 1000;
-uint32_t elapsed_time = 0;
+uint32_t elapsed_time = 1;
 
 /* USER CODE END 0 */
 
@@ -142,7 +143,7 @@ int main(void)
 				mainScreen(&person_cal_info);
 				break;
 			case final_mode:
-				finalModeScreen();
+				finalModeScreen(&person_cal_info);
 				break;
 		}
 	}
