@@ -2,7 +2,7 @@
  * main_mode.h
  *
  *  Created on: 28 Haz 2020
- *      Author: DELL
+ *      Author: hizirov
  */
 
 #ifndef INC_STATES_MAIN_MODE_H_
