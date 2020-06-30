@@ -8,7 +8,6 @@
 #include "states/final_mode.h"
 #include "states/main_mode.h"
 
-extern uint32_t eta_time;
 extern uint32_t step_num;
 extern uint32_t elapsed_time;
 extern uint32_t current_step;
@@ -41,6 +40,7 @@ void finalModeScreen(const CalorieInfo *person_cal_info) {
 			current_step = 1;
 			step_num = 1000;
 			elapsed_time = 1;
+			ST7735_FillScreen(BACKGROUND_COLOR_FNL_MODE);
 			break;
 		}
 	}

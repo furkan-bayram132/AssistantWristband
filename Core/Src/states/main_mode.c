@@ -18,13 +18,13 @@ extern uint32_t step_num;
 extern uint32_t elapsed_time;
 extern state current_state;
 extern state mode_state;
-uint32_t eta_time;
+
 
 void mainScreen(const CalorieInfo *person_cal_info) {
 	char text1[25] = { 0 };
 	sprintf(text1, "  %ld / %ld step", current_step, step_num);
 	ST7735_WriteString(0, 50, text1, TEXT_FONT_MAIN_MODE, TEXT_COLOR_MAIN_MODE, TEXT_BACKGROUND_COLOR_MAIN_MODE);
-	eta_time = ((step_num - current_step) * elapsed_time) / current_step;
+	uint32_t eta_time = ((step_num - current_step) * elapsed_time) / current_step;
 	if (current_step >= step_num) {
 		ST7735_FillScreen(BACKGROUND_COLOR_MAIN_MODE);
 		current_state = final_mode;
@@ -35,7 +35,6 @@ void mainScreen(const CalorieInfo *person_cal_info) {
 	char text2[25] = { 0 };
 	sprintf(text2, "   ETA:  %ld:%ld:%ld", hour, min, sec);
 	ST7735_WriteString(0, 100, text2, TEXT_FONT_MAIN_MODE, TEXT_COLOR_MAIN_MODE, TEXT_BACKGROUND_COLOR_MAIN_MODE);
-
 }
 
 
