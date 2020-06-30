@@ -16,26 +16,36 @@ extern state current_state;
 extern state mode_state;
 
 void finalModeScreen(const CalorieInfo *person_cal_info) {
-	char t1[50] = { 0 };
-	ST7735_WriteString(0, 10, "==================", TEXT_FONT_FNL_MODE, TEXT_COLOR_FNL_MODE, BACKGROUND_COLOR_FNL_MODE);
-	ST7735_WriteString(0, 40, "     CONGRATS", TEXT_FONT_FNL_MODE, TEXT_COLOR_FNL_MODE, BACKGROUND_COLOR_FNL_MODE);
-	if (mode_state == step_mode) { // step mode
-		sprintf(t1, " %ld step taken", step_num);
-		ST7735_WriteString(0, 70, t1, TEXT_FONT_FNL_MODE, TEXT_COLOR_FNL_MODE, BACKGROUND_COLOR_FNL_MODE);
-		//sprintf(t1, "eta:%ld, step:%ld, elapsed:%ld, current:%ld", eta_time, step_num, elapsed_time, current_step);
-		//ST7735_WriteString(0, 70, t1, TEXT_FONT_FNL_MODE, TEXT_COLOR_FNL_MODE, BACKGROUND_COLOR_FNL_MODE);
+	while (1) {
+		char t1[50] = { 0 };
+		ST7735_WriteString(0, 10, "==================", TEXT_FONT_FNL_MODE, TEXT_COLOR_FNL_MODE, BACKGROUND_COLOR_FNL_MODE);
+		ST7735_WriteString(0, 40, "     CONGRATS", TEXT_FONT_FNL_MODE, TEXT_COLOR_FNL_MODE, BACKGROUND_COLOR_FNL_MODE);
+		if (mode_state == step_mode) { // step mode
+			sprintf(t1, " %ld step taken", step_num);
+			ST7735_WriteString(0, 70, t1, TEXT_FONT_FNL_MODE, TEXT_COLOR_FNL_MODE, BACKGROUND_COLOR_FNL_MODE);
+			//sprintf(t1, "eta:%ld, step:%ld, elapsed:%ld, current:%ld", eta_time, step_num, elapsed_time, current_step);
+			//ST7735_WriteString(0, 70, t1, TEXT_FONT_FNL_MODE, TEXT_COLOR_FNL_MODE, BACKGROUND_COLOR_FNL_MODE);
 
+		}
+		else { // calorie mode
+			char t3[20] = { 0 };
+			sprintf(t3, "%d calorie burned", person_cal_info->calorie_amount);
+			ST7735_WriteString(0, 70, t3, TEXT_FONT_FNL_MODE, TEXT_COLOR_FNL_MODE, BACKGROUND_COLOR_FNL_MODE);
+		}
+		char t4[20] = { 0 };
+		uint32_t hour = 0, min = 0, sec = elapsed_time;
+		convertSecToTimeStamp(elapsed_time, &hour, &min, &sec);
+		sprintf(t4, " Elapsed : %ld:%ld:%ld", hour, min, sec);
+		ST7735_WriteString(0, 100, t4, TEXT_FONT_FNL_MODE, TEXT_COLOR_FNL_MODE, BACKGROUND_COLOR_FNL_MODE);
+		ST7735_WriteString(0, 130, "==================", TEXT_FONT_FNL_MODE, TEXT_COLOR_FNL_MODE, BACKGROUND_COLOR_FNL_MODE);
+
+		HAL_Delay(1000);
+		ST7735_FillScreen(BACKGROUND_COLOR_FNL_MODE);
+
+		if (HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_1)) {
+			current_state = choose_mode;
+			break;
+		}
 	}
-	else { // calorie mode
-		char t3[20] = { 0 };
-		sprintf(t3, "%d calorie burned", person_cal_info->calorie_amount);
-		ST7735_WriteString(0, 70, t3, TEXT_FONT_FNL_MODE, TEXT_COLOR_FNL_MODE, BACKGROUND_COLOR_FNL_MODE);
-	}
-	char t4[20] = { 0 };
-	uint32_t hour = 0, min = 0, sec = elapsed_time;
-	convertSecToTimeStamp(elapsed_time, &hour, &min, &sec);
-	sprintf(t4, " Elapsed : %ld:%ld:%ld", hour, min, sec);
-	ST7735_WriteString(0, 100, t4, TEXT_FONT_FNL_MODE, TEXT_COLOR_FNL_MODE, BACKGROUND_COLOR_FNL_MODE);
-	ST7735_WriteString(0, 130, "==================", TEXT_FONT_FNL_MODE, TEXT_COLOR_FNL_MODE, BACKGROUND_COLOR_FNL_MODE);
 }
 
