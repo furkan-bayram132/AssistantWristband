@@ -19,10 +19,11 @@
 /* USER CODE END Header */
 
 /* Includes ------------------------------------------------------------------*/
+#include "main.h"
 #include "stm32f4xx_it.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "states/calorie_mode.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -55,7 +56,10 @@
 /* USER CODE END 0 */
 
 /* External variables --------------------------------------------------------*/
-
+extern TIM_HandleTypeDef htim3;
+extern uint32_t current_step;
+extern uint32_t elapsed_time;
+extern state current_state;
 /* USER CODE BEGIN EV */
 
 /* USER CODE END EV */
@@ -195,6 +199,25 @@ void SysTick_Handler(void)
 /* For the available peripheral interrupt handler names,                      */
 /* please refer to the startup file (startup_stm32f4xx.s).                    */
 /******************************************************************************/
+
+/**
+  * @brief This function handles TIM3 global interrupt.
+  */
+void TIM3_IRQHandler(void)
+{
+  /* USER CODE BEGIN TIM3_IRQn 0 */
+
+  if (current_state == main_mode) {
+	  current_step += 1;
+	  elapsed_time += 1;
+  }
+
+  /* USER CODE END TIM3_IRQn 0 */
+  HAL_TIM_IRQHandler(&htim3);
+  /* USER CODE BEGIN TIM3_IRQn 1 */
+
+  /* USER CODE END TIM3_IRQn 1 */
+}
 
 /* USER CODE BEGIN 1 */
 

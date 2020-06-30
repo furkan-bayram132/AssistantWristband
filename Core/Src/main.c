@@ -21,14 +21,13 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 
+/* Private includes ----------------------------------------------------------*/
+/* USER CODE BEGIN Includes */
 #include "states/welcome_mode.h"
 #include "states/calorie_mode.h"
 #include "states/choose_mode.h"
 #include "states/main_mode.h"
 #include "states/step_mode.h"
-/* Private includes ----------------------------------------------------------*/
-/* USER CODE BEGIN Includes */
-
 
 /* USER CODE END Includes */
 
@@ -51,6 +50,8 @@ I2C_HandleTypeDef hi2c1;
 
 SPI_HandleTypeDef hspi3;
 
+TIM_HandleTypeDef htim3;
+
 UART_HandleTypeDef huart6;
 
 /* USER CODE BEGIN PV */
@@ -63,6 +64,7 @@ static void MX_GPIO_Init(void);
 static void MX_I2C1_Init(void);
 static void MX_USART6_UART_Init(void);
 static void MX_SPI3_Init(void);
+static void MX_TIM3_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -73,6 +75,7 @@ state current_state = welcome_mode; // extern types of this global variable are 
 // since multiple header files including may result multiple definitions of current_state variable.
 uint32_t current_step = 0;
 uint32_t step_num = 1000;
+uint32_t elapsed_time = 0;
 
 /* USER CODE END 0 */
 
@@ -108,6 +111,8 @@ int main(void)
   MX_I2C1_Init();
   MX_USART6_UART_Init();
   MX_SPI3_Init();
+  MX_TIM3_Init();
+  HAL_TIM_Base_Start_IT(&htim3);
   /* USER CODE BEGIN 2 */
 
 	// put all custom initialization functions here no matter which states they belong to
@@ -270,6 +275,51 @@ static void MX_SPI3_Init(void)
   /* USER CODE BEGIN SPI3_Init 2 */
 
   /* USER CODE END SPI3_Init 2 */
+
+}
+
+/**
+  * @brief TIM3 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM3_Init(void)
+{
+
+  /* USER CODE BEGIN TIM3_Init 0 */
+
+  /* USER CODE END TIM3_Init 0 */
+
+  TIM_ClockConfigTypeDef sClockSourceConfig = {0};
+  TIM_MasterConfigTypeDef sMasterConfig = {0};
+
+  /* USER CODE BEGIN TIM3_Init 1 */
+
+  /* USER CODE END TIM3_Init 1 */
+  htim3.Instance = TIM3;
+  htim3.Init.Prescaler = 25000;
+  htim3.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim3.Init.Period = 999;
+  htim3.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim3.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim3) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
+  if (HAL_TIM_ConfigClockSource(&htim3, &sClockSourceConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+  if (HAL_TIMEx_MasterConfigSynchronization(&htim3, &sMasterConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM3_Init 2 */
+
+  /* USER CODE END TIM3_Init 2 */
 
 }
 
