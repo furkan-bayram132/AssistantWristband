@@ -141,21 +141,11 @@ int main(void)
 			case main_mode:
 				mainScreen(&person_cal_info);
 				break;
+			case final_mode:
+				finalModeScreen();
+				break;
 		}
 	}
-
-
-
-
-
-	ST7735_FillScreen(ST7735_WHITE);
-	//ST7735_DrawImage(0,0,128,128,win10_logo);
-
-
-	HAL_Delay(2000);
-	ST7735_FillScreen(ST7735_WHITE);
-	//ST7735_WriteString(0, 150, "www.digitalruh.com", Font_7x10, ST7735_BLACK, ST7735_WHITE);
-
 
     /* USER CODE END WHILE */
 

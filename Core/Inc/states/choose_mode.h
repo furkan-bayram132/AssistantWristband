@@ -18,7 +18,6 @@
 #define BACKGROUND_COLOR_CHS_MODE ST7735_BLACK
 #define TEXT_BACKGROUND_COLOR_CHS_MODE ST7735_BLACK // defines the background of letters of the text
 
-extern state current_state;
 
 void chooseModeScreen();
 

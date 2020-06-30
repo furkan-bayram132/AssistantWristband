@@ -7,6 +7,8 @@
 
 #include "states/choose_mode.h"
 
+extern state current_state;
+
 void chooseModeScreen() {
 	if (HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_0)) {
 		// C0 connected to the right button

@@ -2,7 +2,7 @@
  * main_mode.c
  *
  *  Created on: 28 Haz 2020
- *      Author: DELL
+ *      Author: hizirov
  */
 
 
@@ -16,6 +16,7 @@ extern UART_HandleTypeDef huart6;
 extern uint32_t current_step;
 extern uint32_t step_num;
 extern uint32_t elapsed_time;
+extern state current_state;
 
 void mainScreen(const CalorieInfo *person_cal_info) {
 	if (!person_cal_info->calorie_unit) { // if it is zero, it means never assigned a value to it after initializing
@@ -23,8 +24,13 @@ void mainScreen(const CalorieInfo *person_cal_info) {
 		char text1[25] = { 0 };
 		sprintf(text1, " %ld / %ld step done", current_step, step_num);
 		uint32_t eta_time = ((step_num - current_step) * elapsed_time) / current_step; // 1 : gecen sure ile degisecek
+		if (eta_time == 0) {
+			current_state = final_mode;
+		}
+		uint32_t hour = 0, min = 0, sec = 0;
+		convertSecToTimeStamp(eta_time, &hour, &min, &sec);
 		char text2[25] = { 0 };
-		sprintf(text2, "   ETA:  %ld", eta_time);
+		sprintf(text2, "ETA:  %ld:%ld:%ld", hour, min, sec);
 		ST7735_WriteString(0, 50, text1, TEXT_FONT_MAIN_MODE, TEXT_COLOR_MAIN_MODE, TEXT_BACKGROUND_COLOR_MAIN_MODE);
 		ST7735_WriteString(0, 100, text2, TEXT_FONT_MAIN_MODE, TEXT_COLOR_MAIN_MODE, TEXT_BACKGROUND_COLOR_MAIN_MODE);
 
@@ -32,6 +38,13 @@ void mainScreen(const CalorieInfo *person_cal_info) {
 	else {
 
 	}
+}
+
+
+void convertSecToTimeStamp(uint32_t elapsed_time, uint32_t* hour_ptr, uint32_t* min_ptr, uint32_t* sec_ptr) {
+	*hour_ptr = elapsed_time / 3600;
+	*min_ptr = (elapsed_time - (3600 * *hour_ptr)) / 60;
+	*sec_ptr = (elapsed_time - (3600 * *hour_ptr) - (*min_ptr * 60));
 }
 
 

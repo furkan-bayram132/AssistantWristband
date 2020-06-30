@@ -48,7 +48,7 @@ extern "C" {
  * calorie_mode : calorie mode screen
  * main_mode : state where the steps counted, user notifies, screen updated etc. main state, basically
  * */
-typedef enum state {welcome_mode, choose_mode, step_mode, calorie_mode, main_mode} state;
+typedef enum state {welcome_mode, choose_mode, step_mode, calorie_mode, main_mode, final_mode} state;
 
 #include <stdio.h>
 #include <math.h>

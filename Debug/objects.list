@@ -9,6 +9,7 @@
 "Core/Src/system_stm32f4xx.o"
 "Core/Src/states/calorie_mode.o"
 "Core/Src/states/choose_mode.o"
+"Core/Src/states/final_mode.o"
 "Core/Src/states/main_mode.o"
 "Core/Src/states/step_mode.o"
 "Core/Src/states/welcome_mode.o"
