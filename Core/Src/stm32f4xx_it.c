@@ -57,11 +57,10 @@
 
 /* External variables --------------------------------------------------------*/
 extern TIM_HandleTypeDef htim3;
+/* USER CODE BEGIN EV */
 extern uint32_t current_step;
 extern uint32_t elapsed_time;
 extern state current_state;
-/* USER CODE BEGIN EV */
-
 /* USER CODE END EV */
 
 /******************************************************************************/

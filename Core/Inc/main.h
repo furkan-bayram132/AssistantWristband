@@ -67,6 +67,8 @@ typedef enum state {welcome_mode, choose_mode, step_mode, calorie_mode, main_mod
 
 /* USER CODE END EM */
 
+void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
+
 /* Exported functions prototypes ---------------------------------------------*/
 void Error_Handler(void);
 
