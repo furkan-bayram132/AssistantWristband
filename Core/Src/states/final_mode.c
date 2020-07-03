@@ -13,6 +13,7 @@ extern uint32_t elapsed_time;
 extern uint32_t current_step;
 extern state current_state;
 extern state mode_state;
+extern TIM_HandleTypeDef htim2;
 
 void finalModeScreen(const CalorieInfo *person_cal_info) {
 	while (1) {
@@ -34,12 +35,13 @@ void finalModeScreen(const CalorieInfo *person_cal_info) {
 		sprintf(t4, " Elapsed : %ld:%ld:%ld", hour, min, sec);
 		ST7735_WriteString(0, 100, t4, TEXT_FONT_FNL_MODE, TEXT_COLOR_FNL_MODE, BACKGROUND_COLOR_FNL_MODE);
 		ST7735_WriteString(0, 130, "==================", TEXT_FONT_FNL_MODE, TEXT_COLOR_FNL_MODE, BACKGROUND_COLOR_FNL_MODE);
-
+		htim2.Instance->CCR1 = 125;
 		if (HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_1)) {
 			current_state = choose_mode;
 			current_step = 1;
 			step_num = 1000;
 			elapsed_time = 1;
+			htim2.Instance->CCR1 = 0;
 			ST7735_FillScreen(BACKGROUND_COLOR_FNL_MODE);
 			break;
 		}

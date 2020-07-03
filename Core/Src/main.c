@@ -28,7 +28,7 @@
 #include "states/choose_mode.h"
 #include "states/main_mode.h"
 #include "states/step_mode.h"
-
+#include "states/final_mode.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -117,6 +117,7 @@ int main(void)
   MX_TIM2_Init();
   MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
+    HAL_TIM_Base_Start_IT(&htim3);
   	HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
   	htim2.Instance->CCR1 = 0;
 	// put all custom initialization functions here no matter which states they belong to
