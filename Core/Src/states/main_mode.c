@@ -33,7 +33,12 @@ void mainScreen(const CalorieInfo *person_cal_info) {
 	uint32_t hour = 0, min = 0, sec = 0;
 	convertSecToTimeStamp(eta_time, &hour, &min, &sec);
 	char text2[25] = { 0 };
-	sprintf(text2, "   ETA:  %ld:%ld:%ld", hour, min, sec);
+	sprintf(text2, "   ETA:  %ld:%ld:%ld ", hour, min, sec); // black character at the end of the string here
+	// is important. for example 59 sec is displayed as 0:0:59 at the format above. as the seconds decrease,
+	// assume it will be 49, 39, .... even going further, it will be 9 seconds. in this situation
+	// what we expect would be 0:0:9. however, since before 9 seconds, there was 19 seconds, the lsb digit
+	// of 19, which is 9, stays on the screen. thus we see 0:0:99 instead of 0:0:9. to avoid that we use
+	// extra black so that it covers the extra digit coming from early calculations.
 	ST7735_WriteString(0, 100, text2, TEXT_FONT_MAIN_MODE, TEXT_COLOR_MAIN_MODE, TEXT_BACKGROUND_COLOR_MAIN_MODE);
 	getAccData();
 }
