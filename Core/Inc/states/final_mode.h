@@ -18,6 +18,6 @@
 #define TEXT_BACKGROUND_COLOR_FNL_MODE ST7735_BLACK // defines the background of letters of the text
 
 
-void finalModeScreen(const CalorieInfo *person_cal_info);
+void finalModeScreen(CalorieInfo *person_cal_info);
 
 #endif /* INC_STATES_FINAL_MODE_H_ */

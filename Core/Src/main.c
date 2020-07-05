@@ -75,6 +75,7 @@ static void MX_TIM3_Init(void);
 /* USER CODE BEGIN 0 */
 state current_state = welcome_mode; // extern types of this global variable are defined under .c files
 // since multiple header files including may result multiple definitions of current_state variable.
+CalorieState calorie_state;
 state mode_state;
 uint32_t current_step = 1;
 uint32_t step_num = 1000;
@@ -90,7 +91,7 @@ int main(void)
 {
   /* USER CODE BEGIN 1 */
 	CalorieInfo person_cal_info;
-	CalorieState calorie_state = calorie_height_mode;
+	calorie_state = calorie_height_mode;
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/

@@ -7,6 +7,7 @@
 
 #include "states/final_mode.h"
 #include "states/main_mode.h"
+#include "states/calorie_mode.h"
 
 extern uint32_t step_num;
 extern uint32_t elapsed_time;
@@ -14,8 +15,9 @@ extern uint32_t current_step;
 extern state current_state;
 extern state mode_state;
 extern TIM_HandleTypeDef htim2;
+extern CalorieState calorie_state;
 
-void finalModeScreen(const CalorieInfo *person_cal_info) {
+void finalModeScreen(CalorieInfo *person_cal_info) {
 	while (1) {
 		char t1[50] = { 0 };
 		ST7735_WriteString(0, 10, "==================", TEXT_FONT_FNL_MODE, TEXT_COLOR_FNL_MODE, BACKGROUND_COLOR_FNL_MODE);
@@ -42,6 +44,10 @@ void finalModeScreen(const CalorieInfo *person_cal_info) {
 			step_num = 1000;
 			elapsed_time = 1;
 			htim2.Instance->CCR1 = 0;
+			calorie_state = calorie_height_mode;
+			person_cal_info->calorie_amount = 1000;
+			person_cal_info->height = 160;
+			person_cal_info->weight = 60;
 			ST7735_FillScreen(BACKGROUND_COLOR_FNL_MODE);
 			break;
 		}
