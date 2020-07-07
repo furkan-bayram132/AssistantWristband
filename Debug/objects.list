@@ -2,6 +2,7 @@
 "Core/Src/custom_peripherals/mma8452q.o"
 "Core/Src/custom_peripherals/st7735.o"
 "Core/Src/main.o"
+"Core/Src/queue.o"
 "Core/Src/stm32f4xx_hal_msp.o"
 "Core/Src/stm32f4xx_it.o"
 "Core/Src/syscalls.o"

@@ -60,11 +60,11 @@ void getAccData() {
 			getAccXYZ(&acc_3d);
 			char message[50] = { 0 };
 			//sprintf(message, "acc_x: %d, acc_y: %d, acc_z: %d\r\n", acc_3d.x_acc, acc_3d.y_acc, acc_3d.z_acc);
-			double x_acc = acc_3d.x_acc / 1024.;
-			double y_acc = acc_3d.y_acc / 1024.;
-			double z_acc = acc_3d.z_acc / 1024.;
-			//double magnitude = sqrt((x_acc * x_acc) + (y_acc * y_acc) + (z_acc * z_acc));
-			sprintf(message, " %.2f %.2f %.2f\r\n", x_acc, y_acc, z_acc);
+			int x_acc = acc_3d.x_acc ;
+			int y_acc = acc_3d.y_acc ;
+			int z_acc = acc_3d.z_acc ;
+			int magnitude = sqrt((x_acc * x_acc) + (y_acc * y_acc) + (z_acc * z_acc));
+			sprintf(message, " %d %d %d\r\n", x_acc, y_acc, magnitude);
 			//ST7735_WriteString(0, 50, message, TEXT_FONT_MAIN_MODE, TEXT_COLOR_MAIN_MODE, TEXT_BACKGROUND_COLOR_MAIN_MODE);
 			/*HAL_StatusTypeDef blue_ok = */HAL_UART_Transmit(&huart6, (uint8_t *)message, sizeof(message), 100);
 			/*
