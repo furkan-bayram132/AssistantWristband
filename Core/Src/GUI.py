@@ -10,6 +10,11 @@ seed(1)
 
 fig, axs = plt.subplots(3)
 fig.suptitle('Accelerometer Datas')
+
+axs[0].set_ylim([-1,1])
+axs[1].set_ylim([-1,1])
+axs[2].set_ylim([-1,1])
+
 #ax = fig.add_subplot(111)
 fig.show()
 plt.ylim([-1,1])
@@ -37,7 +42,7 @@ while True:
     axs[1].set_xlim(left=max(0, i-50), right=i+50)
     axs[2].set_xlim(left=max(0, i-50), right=i+50)
     
-    time.sleep(0.1)
+    #time.sleep(0.1)
     i += 1
 
 
