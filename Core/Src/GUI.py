@@ -1,4 +1,4 @@
-'''
+
 import time
 import psutil
 import matplotlib.pyplot as plt
@@ -48,10 +48,22 @@ def HandleDatas(a):
     if int(datas[7]) == 1:
         print('step: ')
     global i
+
+
+    if len(acc_x) > 50:
+        acc_x.pop(0)
+    if len(acc_y) > 50:
+        acc_y.pop(0)
+    if len(acc_z) > 50:
+        acc_z.pop(0)    
+    if len(x) > 50:
+        x.pop(0)
+
     x.append(i)
     acc_x.append(int(datas[1]))
     acc_y.append(int(datas[2]))
     acc_z.append(int(datas[3]))
+
     axs[0].plot(x, acc_x, color='b')
     axs[1].plot(x, acc_y, color='b')
     axs[2].plot(x, acc_z, color='b')
@@ -115,8 +127,8 @@ kilo_label.place(relx=0.78, rely=0.5)
 root.protocol("WM_DELETE_WINDOW", OnClosing)
 
 root.mainloop()
-'''
 
+'''
 import time
 import psutil
 import matplotlib.pyplot as plt
@@ -139,3 +151,4 @@ if(ser.isOpen() == False):
 while True:
     datas = ser.readline().decode("utf-8").split(' ')
     print(datas[7])
+'''

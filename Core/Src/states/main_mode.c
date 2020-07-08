@@ -72,8 +72,8 @@ void getAccData(uint32_t elapsed_time, uint32_t current_step, uint32_t step_num)
 			enqueue(window_acc_y, y_acc);
 			if (isFull(window_acc_y)) {
 				dequeue(window_acc_y);
-				if ((window_acc_y->array[2] - window_acc_y->array[0] < -50) &&
-					(window_acc_y->array[4] - window_acc_y->array[2] > 50)) {
+				if ((window_acc_y->array[2] - window_acc_y->array[0] < -40) &&
+					(window_acc_y->array[4] - window_acc_y->array[2] > 40)) {
 					if (haha_step == 0 && walk_permission) {
 						my_new_num += 1;
 						haha_step = 1;

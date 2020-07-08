@@ -5873,7 +5873,7 @@ void getAccData(uint32_t elapsed_time, uint32_t current_step, uint32_t step_num)
  8002cac:	681b      	ldr	r3, [r3, #0]
  8002cae:	4618      	mov	r0, r3
  8002cb0:	f7fe ff2b 	bl	8001b0a <dequeue>
-				if ((window_acc_y->array[2] - window_acc_y->array[0] < -50) &&
+				if ((window_acc_y->array[2] - window_acc_y->array[0] < -40) &&
  8002cb4:	4b2b      	ldr	r3, [pc, #172]	; (8002d64 <getAccData+0x130>)
  8002cb6:	681b      	ldr	r3, [r3, #0]
  8002cb8:	691b      	ldr	r3, [r3, #16]
@@ -5884,9 +5884,9 @@ void getAccData(uint32_t elapsed_time, uint32_t current_step, uint32_t step_num)
  8002cc2:	691b      	ldr	r3, [r3, #16]
  8002cc4:	681b      	ldr	r3, [r3, #0]
  8002cc6:	1ad3      	subs	r3, r2, r3
- 8002cc8:	f113 0f32 	cmn.w	r3, #50	; 0x32
+ 8002cc8:	f113 0f28 	cmn.w	r3, #40	; 0x28
  8002ccc:	da24      	bge.n	8002d18 <getAccData+0xe4>
-					(window_acc_y->array[4] - window_acc_y->array[2] > 50)) {
+					(window_acc_y->array[4] - window_acc_y->array[2] > 40)) {
  8002cce:	4b25      	ldr	r3, [pc, #148]	; (8002d64 <getAccData+0x130>)
  8002cd0:	681b      	ldr	r3, [r3, #0]
  8002cd2:	691b      	ldr	r3, [r3, #16]
@@ -5898,8 +5898,8 @@ void getAccData(uint32_t elapsed_time, uint32_t current_step, uint32_t step_num)
  8002cde:	3308      	adds	r3, #8
  8002ce0:	681b      	ldr	r3, [r3, #0]
  8002ce2:	1ad3      	subs	r3, r2, r3
-				if ((window_acc_y->array[2] - window_acc_y->array[0] < -50) &&
- 8002ce4:	2b32      	cmp	r3, #50	; 0x32
+				if ((window_acc_y->array[2] - window_acc_y->array[0] < -40) &&
+ 8002ce4:	2b28      	cmp	r3, #40	; 0x28
  8002ce6:	dd17      	ble.n	8002d18 <getAccData+0xe4>
 					if (haha_step == 0 && walk_permission) {
  8002ce8:	4b1f      	ldr	r3, [pc, #124]	; (8002d68 <getAccData+0x134>)
