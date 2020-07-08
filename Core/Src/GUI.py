@@ -72,7 +72,7 @@ def HandleDatas(a):
 
     # time.sleep(0.1)
 
-    first_variable = int(datas[7]) ################## ADIM MIKTARI
+    first_variable = int(datas[5]) ################## ADIM MIKTARI
     second_variable = int(datas[6])
     first_label = Label(root, text=str(first_variable) + " / " + str(second_variable), width=12, height=5, bg="white", font=("Courier", 20, "bold"))
     first_label.place(relx=0.78, rely=0.1)
@@ -148,5 +148,5 @@ if(ser.isOpen() == False):
 
 while True:
     datas = ser.readline().decode("utf-8").split(' ')
-    print(datas[7])
+    print(datas[5])
 '''

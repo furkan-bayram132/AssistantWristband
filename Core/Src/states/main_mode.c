@@ -45,7 +45,7 @@ void mainScreen(const CalorieInfo *person_cal_info) {
 	// of 19, which is 9, stays on the screen. thus we see 0:0:99 instead of 0:0:9. to avoid that we use
 	// extra black so that it covers the extra digit coming from early calculations.
 	ST7735_WriteString(0, 100, text2, TEXT_FONT_MAIN_MODE, TEXT_COLOR_MAIN_MODE, TEXT_BACKGROUND_COLOR_MAIN_MODE);
-	getAccData(eta_time, step_num);
+	checkStepDetection(eta_time);
 }
 
 
@@ -56,7 +56,7 @@ void convertSecToTimeStamp(uint32_t elapsed_time, uint32_t* hour_ptr, uint32_t* 
 }
 
 
-void getAccData(uint32_t eta_time, uint32_t step_num) {
+void checkStepDetection(uint32_t eta_time) {
 	AccData acc_3d;
 	HAL_StatusTypeDef is_mma8452q_read_ok = mma8452qRead(&hi2c1, 0x00, 7, acc_3d.acc_info);
 	if (is_mma8452q_read_ok == HAL_OK) {
@@ -65,6 +65,7 @@ void getAccData(uint32_t eta_time, uint32_t step_num) {
 		int x_acc = acc_3d.x_acc ;
 		int y_acc = acc_3d.y_acc ;
 		int z_acc = acc_3d.z_acc ;
+
 		enqueue(window_acc_y, y_acc);
 		if (isFull(window_acc_y)) {
 			dequeue(window_acc_y);
@@ -75,17 +76,18 @@ void getAccData(uint32_t eta_time, uint32_t step_num) {
 					walk_permission = 0;
 					current_step += 1;
 				}
-
-				else
+				else {
 					possible_step = 0;
+				}
 			}
 			else {
 				possible_step = 0;
 			}
 		}
 
-		sprintf(acc_message, " %d %d %d %ld %ld %ld %ld\r\n", x_acc, y_acc, z_acc, eta_time, current_step, step_num, current_step);
-		/*HAL_StatusTypeDef blue_ok = */HAL_UART_Transmit(&huart6, (uint8_t *)acc_message, sizeof(acc_message), 100);
+		sprintf(acc_message, " %d %d %d %ld %ld %ld %ld\r\n", x_acc, y_acc, z_acc, eta_time, current_step, step_num);
+		HAL_UART_Transmit(&huart6, (uint8_t *)acc_message, sizeof(acc_message), 100);
 	}
-
 }
+
+
