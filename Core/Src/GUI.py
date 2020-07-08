@@ -15,7 +15,7 @@ import random
 seed(1)
 
 fig, axs = plt.subplots(3, figsize=(6, 8))
-fig.suptitle('Accelerometer Datas')
+fig.suptitle('Assistant Wristband')
 
 axs[0].set_ylim([-1024, 1024])
 axs[1].set_ylim([-1024, 1024])
@@ -45,10 +45,8 @@ def calculateETA(elapsed_time):
 def HandleDatas(a):
     datas = ser.readline().decode("utf-8").split(' ')
     #print(int(datas[1]), int(datas[2]), int(datas[3]), int(datas[4]), int(datas[5]))
-    if int(datas[7]) == 1:
-        print('step: ')
-    global i
 
+    global i
 
     if len(acc_x) > 50:
         acc_x.pop(0)

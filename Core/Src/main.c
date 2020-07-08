@@ -78,12 +78,11 @@ state current_state = welcome_mode; // extern types of this global variable are 
 // since multiple header files including may result multiple definitions of current_state variable.
 CalorieState calorie_state;
 state mode_state;
-uint32_t current_step = 1;
+uint32_t current_step = 0;
 uint32_t step_num = 1000;
 uint32_t elapsed_time = 1;
 Queue* window_acc_y;
-uint32_t haha_step = 0;
-uint32_t my_new_num = 0;
+uint32_t possible_step = 0;
 uint8_t walk_permission = 1;
 /* USER CODE END 0 */
 

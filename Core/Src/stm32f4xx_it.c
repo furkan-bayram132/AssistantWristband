@@ -58,7 +58,6 @@
 /* External variables --------------------------------------------------------*/
 extern TIM_HandleTypeDef htim3;
 /* USER CODE BEGIN EV */
-extern uint32_t current_step;
 extern uint32_t elapsed_time;
 extern state current_state;
 extern uint8_t walk_permission;
@@ -208,7 +207,6 @@ void TIM3_IRQHandler(void)
   /* USER CODE BEGIN TIM3_IRQn 0 */
 
   if (current_state == main_mode) {
-	  current_step += 50;
 	  elapsed_time += 1;
   }
 

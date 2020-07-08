@@ -21,6 +21,6 @@
 void mainScreen(const CalorieInfo *person_cal_info);
 // takes sec as a parameter and converts it into hour/min/sec form
 void convertSecToTimeStamp(uint32_t elapsed_time, uint32_t* hour_ptr, uint32_t* min_ptr, uint32_t* sec_ptr);
-void getAccData(uint32_t elapsed_time, uint32_t current_step, uint32_t step_num);
+void getAccData(uint32_t eta_time, uint32_t step_num);
 
 #endif /* INC_STATES_MAIN_MODE_H_ */
