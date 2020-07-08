@@ -20,8 +20,6 @@ axs[0].set_ylim([-1024, 1024])
 axs[1].set_ylim([-1024, 1024])
 axs[2].set_ylim([-1024, 1024])
 
-# ax = fig.add_subplot(111)
-# plt.ylim([-1,1])
 i = 0
 x, acc_x, acc_y, acc_z = [], [], [], []
 
@@ -77,13 +75,14 @@ canvas_widget = canvas.get_tk_widget()
 
 canvas_widget.pack(expand=True)
 
-boy = 1.68 ########################## KILO
-kilo = 80 ############################ BOY
+weight_height = ser.readline().decode("utf-8").split(' ')
+
+kilo = int(weight_height[1]) ############################ BOY
+boy = int(weight_height[2]) ########################## KILO
+
 
 ani = FuncAnimation(fig, HandleDatas, interval=50) ####################### INTERVAL
 
-#im = Image.open("C://Users//furka//OneDrive//Masaüstü//Mysterious//Projeler//Walking//unknown.png")
-#photo = ImageTk.PhotoImage(im)
 
 x_label = Label(root,text = "X",width = 5,height = 5,bg = "white",font = ("Courier",15,"bold"))
 x_label.place(relx = 0.07,rely= 0.10)

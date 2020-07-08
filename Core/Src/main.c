@@ -125,7 +125,7 @@ int main(void)
 	ST7735_Init();
 	mma8452qInit(&hi2c1);
 	initCalorieMode(&person_cal_info);
-
+	uint8_t send_weight_height_key = 0; // when equals 1, provides sending weight and height infos through bluetooth just once.
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -145,6 +145,12 @@ int main(void)
 				calorieScreen(&calorie_state, &person_cal_info);
 				break;
 			case main_mode:
+				if (!send_weight_height_key) {
+					char weight_height_info[50] = { 0 };
+					sprintf(weight_height_info, " %d %d \r\n", person_cal_info.weight, person_cal_info.height);
+					HAL_UART_Transmit(&huart6, (uint8_t *)weight_height_info, sizeof(weight_height_info), 100);
+					++send_weight_height_key;
+				}
 				mainScreen(&person_cal_info);
 				break;
 			case final_mode:
