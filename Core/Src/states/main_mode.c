@@ -7,6 +7,7 @@
 
 
 #include "states/main_mode.h"
+#include "queue.h"
 
 
 extern I2C_HandleTypeDef hi2c1;
@@ -19,6 +20,14 @@ extern uint32_t elapsed_time;
 extern state current_state;
 extern state mode_state;
 
+extern Queue* sample_result;
+extern Queue* dynamic_threshold_array;
+
+extern int dynamic_threshold_min;
+extern int dynamic_threshold_max;
+
+extern int sample_new;
+extern int sample_old;
 
 void mainScreen(const CalorieInfo *person_cal_info) {
 	char text1[25] = { 0 };
@@ -64,17 +73,50 @@ void getAccData(uint32_t elapsed_time, uint32_t current_step, uint32_t step_num)
 			int y_acc = acc_3d.y_acc ;
 			int z_acc = acc_3d.z_acc ;
 			//int magnitude = sqrt((x_acc * x_acc) + (y_acc * y_acc) + (z_acc * z_acc));
-			sprintf(acc_message, " %d %d %d %ld %ld %ld\r\n", x_acc, y_acc, z_acc, elapsed_time, current_step, step_num);
-			//ST7735_WriteString(0, 50, message, TEXT_FONT_MAIN_MODE, TEXT_COLOR_MAIN_MODE, TEXT_BACKGROUND_COLOR_MAIN_MODE);
-			/*HAL_StatusTypeDef blue_ok = */HAL_UART_Transmit(&huart6, (uint8_t *)acc_message, sizeof(acc_message), 100);
-			/*
-			if (blue_ok == HAL_OK) {
-				ST7735_WriteString(0, 100, "ok...", Font_7x10, ST7735_BLACK, ST7735_WHITE);
+
+			if (isFull(sample_result)) {
+				dequeue(sample_result);
+				enqueue(sample_result, y_acc);
 			}
 			else {
-				ST7735_WriteString(0, 100, "not ok...", Font_7x10, ST7735_BLACK, ST7735_WHITE);
-			}*/
-			HAL_Delay(100);
+				enqueue(sample_result, y_acc);
+			}
+			int y_avr = 0;
+			for (int i = 0; i < sample_result->size; ++i) {
+				y_avr += sample_result->array[i];
+			}
+			y_avr = y_avr / sample_result->size;
+
+			if (isFull(dynamic_threshold_array)) {
+				dequeue(dynamic_threshold_array);
+				enqueue(dynamic_threshold_array, y_acc);
+				for (int i = 0; i < dynamic_threshold_array->size; ++i) {
+					if (dynamic_threshold_array->array[i] > dynamic_threshold_max) {
+						dynamic_threshold_max = dynamic_threshold_array->array[i];
+					}
+					else if (dynamic_threshold_array->array[i] < dynamic_threshold_min) {
+						dynamic_threshold_min = dynamic_threshold_array->array[i];
+					}
+				}
+				dynamic_threshold_array->size = 0;
+
+			}
+			else {
+				enqueue(dynamic_threshold_array, y_acc);
+			}
+
+			sample_old = sample_new;
+			int acc_changes = y_avr - sample_new;
+			if (acc_changes < -650) {
+				sample_new = y_avr;
+			}
+
+			int slope = sample_new - sample_old;
+			int dynamic_threshold = (dynamic_threshold_max + dynamic_threshold_min) / 2;
+
+			sprintf(acc_message, " %d %d %d %ld %ld %ld %d %d %d\r\n", x_acc, y_avr, z_acc, elapsed_time, current_step, step_num, dynamic_threshold, acc_changes, slope);
+			/*HAL_StatusTypeDef blue_ok = */HAL_UART_Transmit(&huart6, (uint8_t *)acc_message, sizeof(acc_message), 100);
+			//HAL_Delay(100); !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		}
 		else {
 			// uart ile buraya mesaj bas

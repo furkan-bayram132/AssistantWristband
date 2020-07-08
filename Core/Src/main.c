@@ -29,6 +29,7 @@
 #include "states/main_mode.h"
 #include "states/step_mode.h"
 #include "states/final_mode.h"
+#include "queue.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -81,6 +82,12 @@ uint32_t current_step = 1;
 uint32_t step_num = 1000;
 uint32_t elapsed_time = 1;
 
+Queue* sample_result;
+Queue* dynamic_threshold_array;
+int dynamic_threshold_min = 1024;
+int dynamic_threshold_max = -1024;
+int sample_new = 0;
+int sample_old = 0;
 /* USER CODE END 0 */
 
 /**
@@ -126,6 +133,8 @@ int main(void)
 	mma8452qInit(&hi2c1);
 	initCalorieMode(&person_cal_info);
 	uint8_t send_weight_height_key = 0; // when equals 1, provides sending weight and height infos through bluetooth just once.
+	sample_result = createQueue(4);
+	dynamic_threshold_array = createQueue(50);
   /* USER CODE END 2 */
 
   /* Infinite loop */

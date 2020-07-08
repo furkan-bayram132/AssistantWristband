@@ -51,6 +51,7 @@ extern "C" {
 typedef enum state {welcome_mode, choose_mode, step_mode, calorie_mode, main_mode, final_mode} state;
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <math.h>
 
 

@@ -43,7 +43,8 @@ def calculateETA(elapsed_time):
 
 def HandleDatas(a):
     datas = ser.readline().decode("utf-8").split(' ')
-    print(int(datas[1]), int(datas[2]), int(datas[3]), int(datas[4]), int(datas[5]))
+    #print(int(datas[1]), int(datas[2]), int(datas[3]), int(datas[4]), int(datas[5]))
+    print('dynamic threshold: ', int(datas[7]), 'acc changes: ', int(datas[8]), 'slope: ', int(datas[9]))
     global i
     x.append(i)
     acc_x.append(int(datas[1]))
