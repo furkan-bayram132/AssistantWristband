@@ -16,7 +16,7 @@ void stepScreen(uint32_t step_no) {
 		while (HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_0))
 			;
 		HAL_Delay(300);
-		step_num += 1000;
+		step_num += 5; // #####
 	}
 	else if (HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_1)) {
 		// C1 connected to the middle button
@@ -32,7 +32,7 @@ void stepScreen(uint32_t step_no) {
 		while (HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_2))
 			;
 		HAL_Delay(300);
-		step_num -= 1000;
+		step_num -= 5; // #####
 	}
 
 	char step_text[22] = { 0 }; // "Step Number:" : 12 byte, 32bit number : 10 byte = 22 byte

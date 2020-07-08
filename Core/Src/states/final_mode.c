@@ -41,11 +41,11 @@ void finalModeScreen(CalorieInfo *person_cal_info) {
 		if (HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_1)) {
 			current_state = choose_mode;
 			current_step = 1;
-			step_num = 1000;
+			step_num = 25; // #####
 			elapsed_time = 1;
 			htim2.Instance->CCR1 = 0;
 			calorie_state = calorie_height_mode;
-			person_cal_info->calorie_amount = 1000;
+			person_cal_info->calorie_amount = 1;
 			person_cal_info->height = 160;
 			person_cal_info->weight = 60;
 			ST7735_FillScreen(BACKGROUND_COLOR_FNL_MODE);

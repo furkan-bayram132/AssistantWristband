@@ -45,7 +45,7 @@ void calorieScreen(CalorieState* calorie_mode, CalorieInfo* person_cal_info) {
 void initCalorieMode(CalorieInfo* person_cal_info) {
 	person_cal_info->height = 160;
 	person_cal_info->weight = 60;
-	person_cal_info->calorie_amount = 1000;
+	person_cal_info->calorie_amount = 1;
 }
 
 
@@ -137,7 +137,7 @@ void calorieAmountMode(CalorieState* calorie_mode, CalorieInfo* person_cal_info)
 		while (HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_0))
 			;
 		HAL_Delay(300);
-		person_cal_info->calorie_amount += 100;
+		person_cal_info->calorie_amount += 1;
 	}
 	else if (HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_1)) {
 		// C1 connected to the middle button
@@ -152,7 +152,7 @@ void calorieAmountMode(CalorieState* calorie_mode, CalorieInfo* person_cal_info)
 		while (HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_2))
 			;
 		HAL_Delay(300);
-		person_cal_info->calorie_amount -= 100;
+		person_cal_info->calorie_amount -= 1;
 	}
 
 	ST7735_WriteString(0, 20, "(L) : - \\/ + : (R)", TEXT_FONT_CLR_MODE, TEXT_COLOR_CLR_MODE, BACKGROUND_COLOR_CLR_MODE);
