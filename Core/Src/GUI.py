@@ -33,9 +33,17 @@ def OnClosing():
     plt.close()
 
 
+
+def calculateETA(elapsed_time):
+    current_hour = elapsed_time // 3600
+    current_min = (elapsed_time - (3600 * current_hour)) // 60
+    current_sec = elapsed_time - (3600 * current_hour) - (current_min * 60)
+    return current_hour, current_min, current_sec
+
+
 def HandleDatas(a):
     datas = ser.readline().decode("utf-8").split(' ')
-    print(int(datas[1]), int(datas[2]), int(datas[1]))
+    print(int(datas[1]), int(datas[2]), int(datas[3]), int(datas[4]), int(datas[5]))
     global i
     x.append(i)
     acc_x.append(int(datas[1]))
@@ -51,14 +59,15 @@ def HandleDatas(a):
 
     # time.sleep(0.1)
 
-    first_variable = randint(0,1000) ################## ADIM MIKTARI
-    first_label = Label(root, text=str(first_variable) + " / 1000", width=12, height=5, bg="white", font=("Courier", 20, "bold"))
+    first_variable = int(datas[5]) ################## ADIM MIKTARI
+    second_variable = int(datas[6])
+    first_label = Label(root, text=str(first_variable) + " / " + str(second_variable), width=12, height=5, bg="white", font=("Courier", 20, "bold"))
     first_label.place(relx=0.78, rely=0.1)
-
-    second_variable = randint(0,10) ################# BOY
-    third_variable = randint(0, 10) ################# KILO
-    fourth_variable = randint(0, 10) ################# ETA
-    first_label = Label(root, text=str(second_variable) + ":" + str(third_variable) + ":" + str(fourth_variable), width=12, height=5, bg="white", font=("Courier", 20, "bold"))
+    ETA = calculateETA(int(datas[4]))
+    third_variable = ETA[0]
+    fourth_variable = ETA[1]
+    fifth_variable = ETA[2]
+    first_label = Label(root, text=str(third_variable) + ":" + str(fourth_variable) + ":" + str(fifth_variable), width=12, height=5, bg="white", font=("Courier", 20, "bold"))
     first_label.place(relx=0.78, rely=0.7)
 
     i += 1

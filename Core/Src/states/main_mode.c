@@ -40,7 +40,7 @@ void mainScreen(const CalorieInfo *person_cal_info) {
 	// of 19, which is 9, stays on the screen. thus we see 0:0:99 instead of 0:0:9. to avoid that we use
 	// extra black so that it covers the extra digit coming from early calculations.
 	ST7735_WriteString(0, 100, text2, TEXT_FONT_MAIN_MODE, TEXT_COLOR_MAIN_MODE, TEXT_BACKGROUND_COLOR_MAIN_MODE);
-	getAccData();
+	getAccData(eta_time, current_step, step_num);
 }
 
 
@@ -51,22 +51,22 @@ void convertSecToTimeStamp(uint32_t elapsed_time, uint32_t* hour_ptr, uint32_t* 
 }
 
 
-void getAccData() {
+void getAccData(uint32_t elapsed_time, uint32_t current_step, uint32_t step_num) {
 	AccData acc_3d;
 	//while (1)
 	//{
 		HAL_StatusTypeDef is_mma8452q_read_ok = mma8452qRead(&hi2c1, 0x00, 7, acc_3d.acc_info);
 		if (is_mma8452q_read_ok == HAL_OK) {
 			getAccXYZ(&acc_3d);
-			char message[50] = { 0 };
+			char acc_message[100] = { 0 };
 			//sprintf(message, "acc_x: %d, acc_y: %d, acc_z: %d\r\n", acc_3d.x_acc, acc_3d.y_acc, acc_3d.z_acc);
 			int x_acc = acc_3d.x_acc ;
 			int y_acc = acc_3d.y_acc ;
 			int z_acc = acc_3d.z_acc ;
-			int magnitude = sqrt((x_acc * x_acc) + (y_acc * y_acc) + (z_acc * z_acc));
-			sprintf(message, " %d %d %d\r\n", x_acc, y_acc, z_acc);
+			//int magnitude = sqrt((x_acc * x_acc) + (y_acc * y_acc) + (z_acc * z_acc));
+			sprintf(acc_message, " %d %d %d %ld %ld %ld\r\n", x_acc, y_acc, z_acc, elapsed_time, current_step, step_num);
 			//ST7735_WriteString(0, 50, message, TEXT_FONT_MAIN_MODE, TEXT_COLOR_MAIN_MODE, TEXT_BACKGROUND_COLOR_MAIN_MODE);
-			/*HAL_StatusTypeDef blue_ok = */HAL_UART_Transmit(&huart6, (uint8_t *)message, sizeof(message), 100);
+			/*HAL_StatusTypeDef blue_ok = */HAL_UART_Transmit(&huart6, (uint8_t *)acc_message, sizeof(acc_message), 100);
 			/*
 			if (blue_ok == HAL_OK) {
 				ST7735_WriteString(0, 100, "ok...", Font_7x10, ST7735_BLACK, ST7735_WHITE);
