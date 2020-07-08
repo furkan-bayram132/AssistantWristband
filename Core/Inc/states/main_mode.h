@@ -10,6 +10,7 @@
 
 #include "main.h"
 #include "states/calorie_mode.h"
+#include "queue.h"
 
 #define TEXT_FONT_MAIN_MODE Font_7x10
 #define TEXT_COLOR_MAIN_MODE ST7735_BLUE

@@ -19,6 +19,11 @@ extern uint32_t elapsed_time;
 extern state current_state;
 extern state mode_state;
 
+extern Queue* window_acc_y;
+extern uint32_t haha_step;
+extern uint32_t elapsed_time;
+extern uint8_t walk_permission;
+extern uint32_t my_new_num;
 
 void mainScreen(const CalorieInfo *person_cal_info) {
 	char text1[25] = { 0 };
@@ -55,6 +60,7 @@ void getAccData(uint32_t elapsed_time, uint32_t current_step, uint32_t step_num)
 	AccData acc_3d;
 	//while (1)
 	//{
+
 		HAL_StatusTypeDef is_mma8452q_read_ok = mma8452qRead(&hi2c1, 0x00, 7, acc_3d.acc_info);
 		if (is_mma8452q_read_ok == HAL_OK) {
 			getAccXYZ(&acc_3d);
@@ -63,21 +69,32 @@ void getAccData(uint32_t elapsed_time, uint32_t current_step, uint32_t step_num)
 			int x_acc = acc_3d.x_acc ;
 			int y_acc = acc_3d.y_acc ;
 			int z_acc = acc_3d.z_acc ;
-			//int magnitude = sqrt((x_acc * x_acc) + (y_acc * y_acc) + (z_acc * z_acc));
-			sprintf(acc_message, " %d %d %d %ld %ld %ld\r\n", x_acc, y_acc, z_acc, elapsed_time, current_step, step_num);
+			enqueue(window_acc_y, y_acc);
+			if (isFull(window_acc_y)) {
+				dequeue(window_acc_y);
+				if ((window_acc_y->array[2] - window_acc_y->array[0] < -50) &&
+					(window_acc_y->array[4] - window_acc_y->array[2] > 50)) {
+					if (haha_step == 0 && walk_permission) {
+						my_new_num += 1;
+						haha_step = 1;
+						walk_permission = 0;
+					}
+
+					else
+						haha_step = 0;
+				}
+				else {
+					haha_step = 0;
+				}
+			}
+
+			sprintf(acc_message, " %d %d %d %ld %ld %ld %ld\r\n", x_acc, y_acc, z_acc, elapsed_time, current_step, step_num, my_new_num);
 			//ST7735_WriteString(0, 50, message, TEXT_FONT_MAIN_MODE, TEXT_COLOR_MAIN_MODE, TEXT_BACKGROUND_COLOR_MAIN_MODE);
 			/*HAL_StatusTypeDef blue_ok = */HAL_UART_Transmit(&huart6, (uint8_t *)acc_message, sizeof(acc_message), 100);
-			/*
-			if (blue_ok == HAL_OK) {
-				ST7735_WriteString(0, 100, "ok...", Font_7x10, ST7735_BLACK, ST7735_WHITE);
-			}
-			else {
-				ST7735_WriteString(0, 100, "not ok...", Font_7x10, ST7735_BLACK, ST7735_WHITE);
-			}*/
-			HAL_Delay(100);
 		}
 		else {
 			// uart ile buraya mesaj bas
 		}
+
 	//}
 }

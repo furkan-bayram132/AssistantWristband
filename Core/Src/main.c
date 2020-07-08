@@ -29,6 +29,7 @@
 #include "states/main_mode.h"
 #include "states/step_mode.h"
 #include "states/final_mode.h"
+#include "queue.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -80,7 +81,10 @@ state mode_state;
 uint32_t current_step = 1;
 uint32_t step_num = 1000;
 uint32_t elapsed_time = 1;
-
+Queue* window_acc_y;
+uint32_t haha_step = 0;
+uint32_t my_new_num = 0;
+uint8_t walk_permission = 1;
 /* USER CODE END 0 */
 
 /**
@@ -126,6 +130,7 @@ int main(void)
 	mma8452qInit(&hi2c1);
 	initCalorieMode(&person_cal_info);
 	uint8_t send_weight_height_key = 0; // when equals 1, provides sending weight and height infos through bluetooth just once.
+	window_acc_y = createQueue(5);
   /* USER CODE END 2 */
 
   /* Infinite loop */

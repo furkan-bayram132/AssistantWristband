@@ -1,3 +1,4 @@
+'''
 import time
 import psutil
 import matplotlib.pyplot as plt
@@ -43,7 +44,9 @@ def calculateETA(elapsed_time):
 
 def HandleDatas(a):
     datas = ser.readline().decode("utf-8").split(' ')
-    print(int(datas[1]), int(datas[2]), int(datas[3]), int(datas[4]), int(datas[5]))
+    #print(int(datas[1]), int(datas[2]), int(datas[3]), int(datas[4]), int(datas[5]))
+    if int(datas[7]) == 1:
+        print('step: ')
     global i
     x.append(i)
     acc_x.append(int(datas[1]))
@@ -59,7 +62,7 @@ def HandleDatas(a):
 
     # time.sleep(0.1)
 
-    first_variable = int(datas[5]) ################## ADIM MIKTARI
+    first_variable = int(datas[7]) ################## ADIM MIKTARI
     second_variable = int(datas[6])
     first_label = Label(root, text=str(first_variable) + " / " + str(second_variable), width=12, height=5, bg="white", font=("Courier", 20, "bold"))
     first_label.place(relx=0.78, rely=0.1)
@@ -112,3 +115,27 @@ kilo_label.place(relx=0.78, rely=0.5)
 root.protocol("WM_DELETE_WINDOW", OnClosing)
 
 root.mainloop()
+'''
+
+import time
+import psutil
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+import serial
+from matplotlib.animation import FuncAnimation
+from random import seed
+from random import randint
+from tkinter import *
+from PIL import ImageTk,Image
+import random
+
+x, acc_x, acc_y, acc_z = [], [], [], []
+
+
+ser = serial.Serial('COM6', baudrate=9600)
+if(ser.isOpen() == False):
+  ser.open()
+
+while True:
+    datas = ser.readline().decode("utf-8").split(' ')
+    print(datas[7])

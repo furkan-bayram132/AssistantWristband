@@ -18,8 +18,9 @@ Queue* createQueue(unsigned capacity) {
 
     // This is important, see the enqueue
     queue->rear = capacity - 1;
-    queue->array = (int*)malloc(
-        queue->capacity * sizeof(int));
+    queue->array = (int*)calloc(
+        queue->capacity, sizeof(int));
+
     return queue;
 }
 
