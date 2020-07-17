@@ -88,6 +88,8 @@ while True:
 
 ## Demo
 
+![Demo](https://user-images.githubusercontent.com/23126077/87784830-b39b0f80-c83f-11ea-9a32-f70e81f510a6.gif)
+
 ## References
 
 [1] Ainsworth BE, Haskell WL, Herrmann SD, et al. 2011 Compendium of Physical Activities: a second update of codes and MET values. Med Sci Sports Exerc (2011).
